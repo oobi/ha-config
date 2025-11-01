@@ -27,9 +27,9 @@
             {% set any_problem = false %}
             {% for p in plants %}
               {% if p.light == current_light %}
-                {% set moist = states(p.moisture_sensor) | float(0) %}
-                {% set batt = states(p.battery_sensor) | float(0) %}
-                {% if (moist < moisture_threshold) or (batt < battery_threshold) %}
+                {% set moist = states(p.moisture_sensor) | float(-1) %}
+                {% set batt = states(p.battery_sensor) | float(100) %}
+                {% if (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) %}
                   {% set any_problem = true %}
                 {% endif %}
               {% endif %}
@@ -38,10 +38,8 @@
       - choose:
         - conditions:
           - condition: template
-            value_template: '{{ not light_has_problems }}'
-          - condition: state
-            entity_id: '{{ current_light }}'
-            state: 'on'
+            value_template: >-
+              {{ (not light_has_problems) and (states(current_light) == 'on') }}
           sequence:
           - target:
               entity_id: '{{ current_light }}'
@@ -54,20 +52,20 @@
     - name: plant_1
       light: light.lounge_1
       moisture_sensor: sensor.plant_1_soil_moisture
-      battery_sensor: sensor.plant_1_battery
+      battery_sensor: sensor.plant_sensor_1_battery
     - name: plant_2
       light: light.lounge_2
       moisture_sensor: sensor.plant_2_soil_moisture
-      battery_sensor: sensor.plant_2_battery
+      battery_sensor: sensor.plant_sensor_2_battery
     - name: plant_3
       light: light.lounge_1
       moisture_sensor: sensor.plant_3_soil_moisture
-      battery_sensor: sensor.plant_3_battery
+      battery_sensor: sensor.plant_sensor_3_battery
     - name: plant_4
       light: light.lounge_1
       moisture_sensor: sensor.plant_4_soil_moisture
-      battery_sensor: sensor.plant_4_battery
+      battery_sensor: sensor.plant_sensor_4_battery
     - name: plant_5
       light: light.bathroom_1
       moisture_sensor: sensor.plant_5_soil_moisture
-      battery_sensor: sensor.plant_5_battery
+      battery_sensor: sensor.plant_sensor_5_battery
