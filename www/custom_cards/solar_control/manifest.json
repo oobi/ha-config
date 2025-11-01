@@ -1,0 +1,10 @@
+{
+    "name": "Solar Control Card",
+    "description": "A custom Lovelace card to manage priority smart switches based on available solar export power.",
+    "version": "1.0.0",
+    "author": "Chris Carey",
+    "source": "/local/custom_cards/solar_control/solar-control-card.js",
+    "type": "module",
+    "dependencies": [],
+    "keywords": ["home assistant", "lovelace", "solar", "smart switch", "energy management"]
+  }

@@ -1,0 +1,11 @@
+force_check_plant_status:
+  alias: Force Check Plant Status
+  sequence:
+  - target:
+      entity_id: automation.plant_health_alert_lighting_summary_notifications
+    action: automation.trigger
+    data:
+      skip_condition: true
+  mode: single
+  description: Force a check of all the plant sensors
+  icon: mdi:flower-poppy

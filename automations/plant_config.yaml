@@ -1,0 +1,34 @@
+# Shared plant configuration for all plant alert automations
+# This file contains the common variables used across plant alert automations
+
+# Alert light settings
+alert_color: red
+reset_color: warm white
+brightness: 255
+
+# Thresholds
+moisture_threshold: 20
+battery_threshold: 10
+
+# Plant to light mappings
+plants:
+  - name: plant_1
+    light: light.lounge_1
+    moisture_sensor: sensor.plant_1_soil_moisture
+    battery_sensor: sensor.plant_1_battery
+  - name: plant_2
+    light: light.lounge_2
+    moisture_sensor: sensor.plant_2_soil_moisture
+    battery_sensor: sensor.plant_2_battery
+  - name: plant_3
+    light: light.lounge_1
+    moisture_sensor: sensor.plant_3_soil_moisture
+    battery_sensor: sensor.plant_3_battery
+  - name: plant_4
+    light: light.lounge_1
+    moisture_sensor: sensor.plant_4_soil_moisture
+    battery_sensor: sensor.plant_4_battery
+  - name: plant_5
+    light: light.bathroom_1
+    moisture_sensor: sensor.plant_5_soil_moisture
+    battery_sensor: sensor.plant_5_battery

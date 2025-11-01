@@ -1,0 +1,87 @@
+- id: '1760852852320'
+  alias: Plant Alerts - Activate (Morning Check)
+  description: >
+    Morning plant health check that turns lights red for any plants needing water.
+    Runs once per day at 7am local time. Only affects lights for plants with problems.
+    Sends notification summary if any plants need attention.
+  triggers:
+  - at: '07:00:00'
+    trigger: time
+  actions:
+  - variables:
+      problematic_plants: >
+        {% set probs = [] %}
+        {% for p in plants %}
+          {% set moist = states(p.moisture_sensor) | float(0) %}
+          {% set batt = states(p.battery_sensor) | float(0) %}
+          {% set probs = probs + ([p.name ~ ': Low moisture ' ~ moist ~ '% / Low battery ' ~ batt ~ '%'] if moist < moisture_threshold or batt < battery_threshold else []) %}
+        {% endfor %}
+        {{ probs }}
+  - repeat:
+      for_each: '{{ plants }}'
+      sequence:
+      - variables:
+          plant: '{{ repeat.item.name }}'
+          light_entity: '{{ repeat.item.light }}'
+          moist: '{{ states(repeat.item.moisture_sensor) | float(0) }}'
+          batt: '{{ states(repeat.item.battery_sensor) | float(0) }}'
+          problem: '{{ moist < moisture_threshold or batt < battery_threshold }}'
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ problem }}'
+          sequence:
+          - target:
+              entity_id: '{{ light_entity }}'
+            data:
+              color_name: '{{ alert_color }}'
+              brightness: '{{ brightness }}'
+            action: light.turn_on
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ problematic_plants | length > 0 }}'
+      sequence:
+      - data:
+          title: "🌿 Plant Alerts"
+          message: >
+            {{ problematic_plants | join('
+            ') }}
+          notification_id: plant_alert_summary
+        action: persistent_notification.create
+      - data:
+          title: "🌿 Plant Alerts"
+          message: '{{ problematic_plants | join('', '') }}'
+          data:
+            color: red
+            tag: plant_alert_summary
+            sticky: true
+            importance: high
+        action: notify.mobile_app_chriss_iphone_2
+  mode: restart
+  variables:
+    alert_color: red
+    brightness: 255
+    moisture_threshold: 20
+    battery_threshold: 10
+    plants:
+    - name: plant_1
+      light: light.lounge_1
+      moisture_sensor: sensor.plant_1_soil_moisture
+      battery_sensor: sensor.plant_1_battery
+    - name: plant_2
+      light: light.lounge_2
+      moisture_sensor: sensor.plant_2_soil_moisture
+      battery_sensor: sensor.plant_2_battery
+    - name: plant_3
+      light: light.lounge_1
+      moisture_sensor: sensor.plant_3_soil_moisture
+      battery_sensor: sensor.plant_3_battery
+    - name: plant_4
+      light: light.lounge_1
+      moisture_sensor: sensor.plant_4_soil_moisture
+      battery_sensor: sensor.plant_4_battery
+    - name: plant_5
+      light: light.bathroom_1
+      moisture_sensor: sensor.plant_5_soil_moisture
+      battery_sensor: sensor.plant_5_battery

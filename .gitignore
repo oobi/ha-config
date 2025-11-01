@@ -1,0 +1,58 @@
+# Home Assistant gitignore
+
+# Secrets and sensitive data
+secrets.yaml
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+*.pid
+
+# Temporary files
+.uuid
+.HA_VERSION
+.storage/
+.cloud/
+.google.token
+*.pyc
+__pycache__/
+
+# Dependencies and packages
+deps/
+tts/
+www/community/
+custom_components/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Home Assistant specific
+home-assistant_v2.db*
+known_devices.yaml
+ip_bans.yaml
+*.conf
+
+# Custom components cache
+custom_components/**/__pycache__/
+custom_components/**/*.pyc
+
+# Backup files
+*.backup
+*.bak
+backups/
+
+# Addons (optional - uncomment if you don't want to track addons)
+# addons/
+
+# temp files
+~*
+*~
