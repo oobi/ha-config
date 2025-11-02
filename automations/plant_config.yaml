@@ -3,32 +3,28 @@
 
 # Alert light settings
 alert_color: red
-reset_color: warm white
-brightness: 255
-
-# Thresholds
-moisture_threshold: 20
+brightness_pct: 10
 battery_threshold: 10
 
 # Plant to light mappings
 plants:
   - name: plant_1
+    problem_sensor: plant.plant_1
+    battery_sensor: sensor.plant_sensor_1_battery
     light: light.lounge_1
-    moisture_sensor: sensor.plant_1_soil_moisture
-    battery_sensor: sensor.plant_1_battery
   - name: plant_2
+    problem_sensor: plant.plant_2
+    battery_sensor: sensor.plant_sensor_2_battery
     light: light.lounge_2
-    moisture_sensor: sensor.plant_2_soil_moisture
-    battery_sensor: sensor.plant_2_battery
   - name: plant_3
+    problem_sensor: plant.plant_3
+    battery_sensor: sensor.plant_sensor_3_battery
     light: light.lounge_1
-    moisture_sensor: sensor.plant_3_soil_moisture
-    battery_sensor: sensor.plant_3_battery
   - name: plant_4
+    problem_sensor: plant.plant_4
+    battery_sensor: sensor.plant_sensor_4_battery
     light: light.lounge_1
-    moisture_sensor: sensor.plant_4_soil_moisture
-    battery_sensor: sensor.plant_4_battery
   - name: plant_5
-    light: light.bathroom_1
-    moisture_sensor: sensor.plant_5_soil_moisture
-    battery_sensor: sensor.plant_5_battery
+    problem_sensor: plant.plant_5
+    battery_sensor: sensor.plant_sensor_5_battery
+    light: light.bathroom_3

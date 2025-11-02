@@ -1,0 +1,19 @@
+test_lounge_2_red:
+  alias: Test Lounge 2 Red
+  sequence:
+  - action: logbook.log
+    data:
+      name: "Test Script"
+      message: "Attempting to turn light.lounge_2 red"
+  - target:
+      entity_id: light.lounge_2
+    data:
+      color_name: "red"
+      brightness: 255
+    action: light.turn_on
+  - action: logbook.log
+    data:
+      name: "Test Script"
+      message: "Completed turn_on command for light.lounge_2"
+  mode: single
+  icon: mdi:lightbulb-on

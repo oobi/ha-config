@@ -5,163 +5,259 @@
   - name: "Plant 1 Alert Light"
     unique_id: plant_1_alert_light
     state: >
-      {% set light = 'light.lounge_1' %}
+      {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+      {% set plants = cfg if cfg is iterable else [] %}
+      {% set light = (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' %}
       {{ states(light) }}
     attributes:
-      light_entity: light.lounge_1
-      light_name: "Lounge 1"
+      light_entity: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {{ (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' }}
+      light_name: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% if light == 'light.lounge_1' %}Lounge 1{% elif light == 'light.lounge_2' %}Lounge 2{% elif light == 'light.bathroom_1' %}Bathroom 1{% elif light == 'light.bathroom_3' %}Bathroom 3{% else %}{{ light }}{% endif %}
       color: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {% if is_state(light, 'on') %}
           {{ state_attr(light, 'rgb_color') }}
         {% else %}
           null
         {% endif %}
       brightness: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {{ state_attr(light, 'brightness') if is_state(light, 'on') else 0 }}
-      shared_with: "plant_3, plant_4"
+      shared_with: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_1') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% set others = plants | selectattr('light','equalto', light) | rejectattr('name','equalto','plant_1') | map(attribute='name') | list %}
+        {{ others | join(', ') if others else 'none' }}
     icon: mdi:lightbulb
 
   - name: "Plant 2 Alert Light"
     unique_id: plant_2_alert_light
     state: >
-      {% set light = 'light.lounge_2' %}
+      {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+      {% set plants = cfg if cfg is iterable else [] %}
+      {% set light = (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' %}
       {{ states(light) }}
     attributes:
-      light_entity: light.lounge_2
-      light_name: "Lounge 2"
+      light_entity: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {{ (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' }}
+      light_name: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' %}
+        {% if light == 'light.lounge_1' %}Lounge 1{% elif light == 'light.lounge_2' %}Lounge 2{% elif light == 'light.bathroom_1' %}Bathroom 1{% elif light == 'light.bathroom_3' %}Bathroom 3{% else %}{{ light }}{% endif %}
       color: >
-        {% set light = 'light.lounge_2' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' %}
         {% if is_state(light, 'on') %}
           {{ state_attr(light, 'rgb_color') }}
         {% else %}
           null
         {% endif %}
       brightness: >
-        {% set light = 'light.lounge_2' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' %}
         {{ state_attr(light, 'brightness') if is_state(light, 'on') else 0 }}
-      shared_with: "none"
+      shared_with: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_2') | map(attribute='light') | list | first) or 'light.lounge_2' %}
+        {% set others = plants | selectattr('light','equalto', light) | rejectattr('name','equalto','plant_2') | map(attribute='name') | list %}
+        {{ others | join(', ') if others else 'none' }}
     icon: mdi:lightbulb
 
   - name: "Plant 3 Alert Light"
     unique_id: plant_3_alert_light
     state: >
-      {% set light = 'light.lounge_1' %}
+      {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+      {% set plants = cfg if cfg is iterable else [] %}
+      {% set light = (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' %}
       {{ states(light) }}
     attributes:
-      light_entity: light.lounge_1
-      light_name: "Lounge 1"
+      light_entity: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {{ (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' }}
+      light_name: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% if light == 'light.lounge_1' %}Lounge 1{% elif light == 'light.lounge_2' %}Lounge 2{% elif light == 'light.bathroom_1' %}Bathroom 1{% elif light == 'light.bathroom_3' %}Bathroom 3{% else %}{{ light }}{% endif %}
       color: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {% if is_state(light, 'on') %}
           {{ state_attr(light, 'rgb_color') }}
         {% else %}
           null
         {% endif %}
       brightness: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {{ state_attr(light, 'brightness') if is_state(light, 'on') else 0 }}
-      shared_with: "plant_1, plant_4"
+      shared_with: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_3') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% set others = plants | selectattr('light','equalto', light) | rejectattr('name','equalto','plant_3') | map(attribute='name') | list %}
+        {{ others | join(', ') if others else 'none' }}
     icon: mdi:lightbulb
 
   - name: "Plant 4 Alert Light"
     unique_id: plant_4_alert_light
     state: >
-      {% set light = 'light.lounge_1' %}
+      {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+      {% set plants = cfg if cfg is iterable else [] %}
+      {% set light = (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' %}
       {{ states(light) }}
     attributes:
-      light_entity: light.lounge_1
-      light_name: "Lounge 1"
+      light_entity: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {{ (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' }}
+      light_name: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% if light == 'light.lounge_1' %}Lounge 1{% elif light == 'light.lounge_2' %}Lounge 2{% elif light == 'light.bathroom_1' %}Bathroom 1{% elif light == 'light.bathroom_3' %}Bathroom 3{% else %}{{ light }}{% endif %}
       color: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {% if is_state(light, 'on') %}
           {{ state_attr(light, 'rgb_color') }}
         {% else %}
           null
         {% endif %}
       brightness: >
-        {% set light = 'light.lounge_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' %}
         {{ state_attr(light, 'brightness') if is_state(light, 'on') else 0 }}
-      shared_with: "plant_1, plant_3"
+      shared_with: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_4') | map(attribute='light') | list | first) or 'light.lounge_1' %}
+        {% set others = plants | selectattr('light','equalto', light) | rejectattr('name','equalto','plant_4') | map(attribute='name') | list %}
+        {{ others | join(', ') if others else 'none' }}
     icon: mdi:lightbulb
 
   - name: "Plant 5 Alert Light"
     unique_id: plant_5_alert_light
     state: >
-      {% set light = 'light.bathroom_1' %}
+      {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+      {% set plants = cfg if cfg is iterable else [] %}
+      {% set light = (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' %}
       {{ states(light) }}
     attributes:
-      light_entity: light.bathroom_1
-      light_name: "Bathroom 1"
+      light_entity: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {{ (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' }}
+      light_name: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' %}
+        {% if light == 'light.lounge_1' %}Lounge 1{% elif light == 'light.lounge_2' %}Lounge 2{% elif light == 'light.bathroom_1' %}Bathroom 1{% elif light == 'light.bathroom_3' %}Bathroom 3{% else %}{{ light }}{% endif %}
       color: >
-        {% set light = 'light.bathroom_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' %}
         {% if is_state(light, 'on') %}
           {{ state_attr(light, 'rgb_color') }}
         {% else %}
           null
         {% endif %}
       brightness: >
-        {% set light = 'light.bathroom_1' %}
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' %}
         {{ state_attr(light, 'brightness') if is_state(light, 'on') else 0 }}
-      shared_with: "none"
+      shared_with: >
+        {% set cfg = state_attr('sensor.plant_alert_config', 'plants') %}
+        {% set plants = cfg if cfg is iterable else [] %}
+        {% set light = (plants | selectattr('name','equalto','plant_5') | map(attribute='light') | list | first) or 'light.bathroom_3' %}
+        {% set others = plants | selectattr('light','equalto', light) | rejectattr('name','equalto','plant_5') | map(attribute='name') | list %}
+        {{ others | join(', ') if others else 'none' }}
     icon: mdi:lightbulb
 
   - name: "Plant Alert Status Summary"
     unique_id: plant_alert_status_summary
     state: >
-          {% set plants = [
-            {'name': 'plant_1', 'light': 'light.lounge_1', 'moisture': 'sensor.plant_1_soil_moisture', 'battery': 'sensor.plant_sensor_1_battery'},
-            {'name': 'plant_2', 'light': 'light.lounge_2', 'moisture': 'sensor.plant_2_soil_moisture', 'battery': 'sensor.plant_sensor_2_battery'},
-            {'name': 'plant_3', 'light': 'light.lounge_1', 'moisture': 'sensor.plant_3_soil_moisture', 'battery': 'sensor.plant_sensor_3_battery'},
-            {'name': 'plant_4', 'light': 'light.lounge_1', 'moisture': 'sensor.plant_4_soil_moisture', 'battery': 'sensor.plant_sensor_4_battery'},
-            {'name': 'plant_5', 'light': 'light.bathroom_1', 'moisture': 'sensor.plant_5_soil_moisture', 'battery': 'sensor.plant_sensor_5_battery'}
-          ] %}
-          {% set problem_count = namespace(value=0) %}
-          {% for p in plants %}
-            {% set moist = states(p.moisture) | float(-1) %}
-            {% set batt = states(p.battery) | float(-1) %}
-            {% if moist >= 0 and batt >= 0 and (moist < 20 or batt < 10) %}
-              {% set problem_count.value = problem_count.value + 1 %}
-            {% endif %}
-          {% endfor %}
-          {% if problem_count.value == 0 %}
-            All healthy
-          {% elif problem_count.value == 1 %}
-            1 plant needs attention
-          {% else %}
-            {{ problem_count.value }} plants need attention
-          {% endif %}
+      {% set plants = state_attr('sensor.plant_alert_config', 'plants') or [] %}
+      {% set ns = namespace(cnt=0) %}
+      {% for n in plants | map(attribute='name') %}
+        {% set pen = 'plant.' ~ n %}
+        {% if states(pen) == 'problem' %}
+          {% set ns.cnt = ns.cnt + 1 %}
+        {% endif %}
+      {% endfor %}
+      {% if ns.cnt == 0 %}
+        All healthy
+      {% elif ns.cnt == 1 %}
+        1 plant needs attention
+      {% else %}
+        {{ ns.cnt }} plants need attention
+      {% endif %}
     attributes:
       light_lounge_1_status: >
-            {% set plants = ['plant_1', 'plant_3', 'plant_4'] %}
-            {% set problems = [] %}
-            {% for p in plants %}
-              {% set moist = states('sensor.' ~ p ~ '_soil_moisture') | float(-1) %}
-              {% set num = p | replace('plant_','') %}
-              {% set batt = states('sensor.plant_sensor_' ~ num ~ '_battery') | float(-1) %}
-              {% if moist >= 0 and batt >= 0 and (moist < 20 or batt < 10) %}
-                {% set problems = problems + [p ~ ' (M:' ~ moist ~ '% B:' ~ batt ~ '%)'] %}
-              {% endif %}
-            {% endfor %}
-            {% if problems | length > 0 %}
-              Problems: {{ problems | join(', ') }}
-            {% else %}
-              All healthy
-            {% endif %}
-      light_lounge_2_status: >
-        {% set moist = states('sensor.plant_2_soil_moisture') | float(-1) %}
-        {% set batt = states('sensor.plant_sensor_2_battery') | float(-1) %}
-        {% if moist >= 0 and batt >= 0 and (moist < 20 or batt < 10) %}
-          Problems: plant_2 (M:{{ moist }}% B:{{ batt }}%)
+        {% set plants = state_attr('sensor.plant_alert_config', 'plants') or [] %}
+        {% set names = plants | selectattr('light','equalto','light.lounge_1') | map(attribute='name') | list %}
+        {% set problems = [] %}
+        {% for name in names %}
+          {% set pen = 'plant.' ~ name %}
+          {% if states(pen) == 'problem' %}
+            {% set problems = problems + [ name ~ ' (' ~ (state_attr(pen,'problem') or 'problem') ~ ')' ] %}
+          {% endif %}
+        {% endfor %}
+        {% if problems | length > 0 %}
+          Problems: {{ problems | join(', ') }}
         {% else %}
           All healthy
         {% endif %}
-      light_bathroom_1_status: >
-        {% set moist = states('sensor.plant_5_soil_moisture') | float(-1) %}
-        {% set batt = states('sensor.plant_sensor_5_battery') | float(-1) %}
-        {% if moist >= 0 and batt >= 0 and (moist < 20 or batt < 10) %}
-          Problems: plant_5 (M:{{ moist }}% B:{{ batt }}%)
+      light_lounge_2_status: >
+        {% set plants = state_attr('sensor.plant_alert_config', 'plants') or [] %}
+        {% set names = plants | selectattr('light','equalto','light.lounge_2') | map(attribute='name') | list %}
+        {% set problems = [] %}
+        {% for name in names %}
+          {% set pen = 'plant.' ~ name %}
+          {% if states(pen) == 'problem' %}
+            {% set problems = problems + [ name ~ ' (' ~ (state_attr(pen,'problem') or 'problem') ~ ')' ] %}
+          {% endif %}
+        {% endfor %}
+        {% if problems | length > 0 %}
+          Problems: {{ problems | join(', ') }}
+        {% else %}
+          All healthy
+        {% endif %}
+      light_bathroom_3_status: >
+        {% set plants = state_attr('sensor.plant_alert_config', 'plants') or [] %}
+        {% set names = plants | selectattr('light','equalto','light.bathroom_3') | map(attribute='name') | list %}
+        {% set problems = [] %}
+        {% for name in names %}
+          {% set pen = 'plant.' ~ name %}
+          {% if states(pen) == 'problem' %}
+            {% set problems = problems + [ name ~ ' (' ~ (state_attr(pen,'problem') or 'problem') ~ ')' ] %}
+          {% endif %}
+        {% endfor %}
+        {% if problems | length > 0 %}
+          Problems: {{ problems | join(', ') }}
         {% else %}
           All healthy
         {% endif %}

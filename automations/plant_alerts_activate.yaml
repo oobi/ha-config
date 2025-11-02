@@ -1,106 +1,66 @@
 - id: '1760852852320'
   alias: Plant Alerts - Activate (Morning Check)
   description: >
-    Morning plant health check that turns lights red for any plants needing water.
-    Runs once per day at 7am local time. Only affects lights for plants with problems.
-    Sends notification summary if any plants need attention.
+    Morning plant health check - turns lights red for plants with problems or low battery.
+    Runs once per day at 7am. Groups plants by light and only turns on lights that have issues.
   trigger:
   - platform: time
     at: '07:00:00'
   action:
+  - variables: !include plant_config.yaml
   - variables:
-      problematic_plants: >
-        {% set probs = [] %}
+      lights_to_activate: >-
+        {% set ns = namespace(lights=[]) %}
         {% for p in plants %}
-          {% set moist = states(p.moisture_sensor) | float(-1) %}
+          {% set prob = states(p.problem_sensor) == 'problem' %}
           {% set batt = states(p.battery_sensor) | float(100) %}
-          {% set has_problem = (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) %}
-          {% if has_problem %}
-            {% set probs = probs + ([p.name ~ ': Low moisture ' ~ moist ~ '% / Battery ' ~ batt ~ '%']) %}
+          {% set low_batt = batt < battery_threshold %}
+          {% if (prob or low_batt) and p.light not in ns.lights %}
+            {% set ns.lights = ns.lights + [p.light] %}
           {% endif %}
         {% endfor %}
-        {{ probs }}
-      unique_lights: >-
-        {% set lights = namespace(list=[]) %}
+        {{ ns.lights }}
+  - action: persistent_notification.create
+    data:
+      title: "🌿 Plant Alerts - Morning Check"
+      message: >-
+        Executed: {{ now().strftime('%-d %B %Y at %H:%M:%S') }}
+
+        Battery threshold: {{ battery_threshold }}%
+
+        {% set ns = namespace(actions=[]) %}
         {% for p in plants %}
-          {% if p.light not in lights.list %}
-            {% set lights.list = lights.list + [p.light] %}
+          {% set prob = states(p.problem_sensor) == 'problem' %}
+          {% set prob_attr = state_attr(p.problem_sensor, 'problem') %}
+          {% set batt = states(p.battery_sensor) | float(100) %}
+          {% set low_batt = batt < battery_threshold %}
+          {% set needs_action = prob or low_batt %}
+          {% if needs_action %}
+            {% set reason = [] %}
+            {% if prob %}{% set reason = reason + ['plant problem: ' ~ (prob_attr if prob_attr else states(p.problem_sensor))] %}{% endif %}
+            {% if low_batt %}{% set reason = reason + ['low battery: ' ~ batt ~ '%'] %}{% endif %}
+            {% set ns.actions = ns.actions + [p.name ~ ' → ' ~ p.light ~ ' (' ~ reason | join(', ') ~ ')'] %}
           {% endif %}
         {% endfor %}
-        {{ lights.list }}
+
+        {% if ns.actions | length > 0 %}
+        Actions taken:
+        {% for action in ns.actions %}
+        - {{ action }}
+        {% endfor %}
+
+        Lights turned on: {{ lights_to_activate | join(', ') }}
+        {% else %}
+        All plants healthy - no action needed
+        {% endif %}
   - repeat:
-      for_each: '{{ unique_lights }}'
+      for_each: '{{ lights_to_activate }}'
       sequence:
-      - variables:
-          current_light: '{{ repeat.item }}'
-          light_has_problem: >-
-            {% set any_problem = false %}
-            {% for p in plants %}
-              {% if p.light == current_light %}
-                {% set moist = states(p.moisture_sensor) | float(-1) %}
-                {% set batt = states(p.battery_sensor) | float(100) %}
-                {% if (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) %}
-                  {% set any_problem = true %}
-                {% endif %}
-              {% endif %}
-            {% endfor %}
-            {{ any_problem }}
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: '{{ light_has_problem }}'
-          sequence:
-          - target:
-              entity_id: '{{ current_light }}'
-            data:
-              color_name: '{{ alert_color }}'
-              brightness: '{{ brightness }}'
-            action: light.turn_on
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ problematic_plants | length > 0 }}'
-      sequence:
-      - data:
-          title: "🌿 Plant Alerts"
-          message: >
-            {{ problematic_plants | join('
-            ') }}
-          notification_id: plant_alert_summary
-        action: persistent_notification.create
-      - data:
-          title: "🌿 Plant Alerts"
-          message: '{{ problematic_plants | join('', '') }}'
-          data:
-            color: red
-            tag: plant_alert_summary
-            sticky: true
-            importance: high
-        action: notify.mobile_app_chriss_iphone_2
+      - target:
+          entity_id: '{{ repeat.item }}'
+        data:
+          color_name: '{{ alert_color }}'
+          brightness_pct: '{{ brightness_pct }}'
+          transition: 1
+        action: light.turn_on
   mode: restart
-  variables:
-    alert_color: red
-    brightness: 255
-    moisture_threshold: 20
-    battery_threshold: 10
-    plants:
-    - name: plant_1
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_1_soil_moisture
-      battery_sensor: sensor.plant_sensor_1_battery
-    - name: plant_2
-      light: light.lounge_2
-      moisture_sensor: sensor.plant_2_soil_moisture
-      battery_sensor: sensor.plant_sensor_2_battery
-    - name: plant_3
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_3_soil_moisture
-      battery_sensor: sensor.plant_sensor_3_battery
-    - name: plant_4
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_4_soil_moisture
-      battery_sensor: sensor.plant_sensor_4_battery
-    - name: plant_5
-      light: light.bathroom_1
-      moisture_sensor: sensor.plant_5_soil_moisture
-      battery_sensor: sensor.plant_sensor_5_battery

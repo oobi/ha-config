@@ -11,61 +11,54 @@
   action:
   - variables:
       unique_lights: >-
-        {% set lights = namespace(list=[]) %}
-        {% for p in plants %}
-          {% if p.light not in lights.list %}
-            {% set lights.list = lights.list + [p.light] %}
-          {% endif %}
-        {% endfor %}
-        {{ lights.list }}
+        {{ plants | map(attribute='light') | unique | list }}
   - repeat:
       for_each: '{{ unique_lights }}'
       sequence:
       - variables:
           current_light: '{{ repeat.item }}'
+          mt: '{{ moisture_threshold }}'
+          bt: '{{ battery_threshold }}'
+          all_plants: '{{ plants }}'
+      - variables:
           light_has_problems: >-
-            {% set any_problem = false %}
-            {% for p in plants %}
-              {% if p.light == current_light %}
-                {% set moist = states(p.moisture_sensor) | float(-1) %}
-                {% set batt = states(p.battery_sensor) | float(100) %}
-                {% if (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) %}
-                  {% set any_problem = true %}
-                {% endif %}
+            {% set pfl = all_plants | selectattr('light','equalto', current_light) | list %}
+            {% set ns = namespace(any=false) %}
+            {% for p in pfl %}
+              {% set pen = 'plant.' ~ p.name %}
+              {% if states(pen) == 'problem' %}
+                {% set ns.any = true %}
               {% endif %}
             {% endfor %}
-            {{ any_problem }}
+            {{ ns.any }}
+          plant_details_for_light: >-
+            {% set pfl = all_plants | selectattr('light','equalto', current_light) | list %}
+            {% set ns = namespace(items=[]) %}
+            {% for p in pfl %}
+              {% set pen = 'plant.' ~ p.name %}
+              {% set prob = states(pen) == 'problem' %}
+              {% set why = state_attr(pen, 'problem') or 'problem' %}
+              {% set ns.items = ns.items + [p.name ~ ' (' ~ why ~ ', prob:' ~ prob ~ ')'] %}
+            {% endfor %}
+            {{ ns.items }}
+      - action: logbook.log
+        data:
+          name: "Plant Alerts"
+          message: >-
+            Deactivate check: light {{ current_light }} state={{ states(current_light) }} has_problems={{ light_has_problems }}; plants={{ plant_details_for_light | join(', ') }}
       - choose:
         - conditions:
           - condition: template
             value_template: >-
               {{ (not light_has_problems) and (states(current_light) == 'on') }}
           sequence:
+          - action: logbook.log
+            data:
+              name: "Plant Alerts"
+              message: >-
+                Turning OFF {{ current_light }} (all mapped plants healthy).
           - target:
               entity_id: '{{ current_light }}'
             action: light.turn_off
   mode: restart
-  variables:
-    moisture_threshold: 20
-    battery_threshold: 10
-    plants:
-    - name: plant_1
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_1_soil_moisture
-      battery_sensor: sensor.plant_sensor_1_battery
-    - name: plant_2
-      light: light.lounge_2
-      moisture_sensor: sensor.plant_2_soil_moisture
-      battery_sensor: sensor.plant_sensor_2_battery
-    - name: plant_3
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_3_soil_moisture
-      battery_sensor: sensor.plant_sensor_3_battery
-    - name: plant_4
-      light: light.lounge_1
-      moisture_sensor: sensor.plant_4_soil_moisture
-      battery_sensor: sensor.plant_sensor_4_battery
-    - name: plant_5
-      light: light.bathroom_1
-      moisture_sensor: sensor.plant_5_soil_moisture
-      battery_sensor: sensor.plant_sensor_5_battery
+  variables: !include plant_config.yaml
