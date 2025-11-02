@@ -1,11 +1,34 @@
 - id: '1760852852320'
   alias: Plant Alerts - Activate (Morning Check)
   description: >
-    Morning plant health check - turns lights red for plants with problems or low battery.
-    Runs once per day at 7am. Groups plants by light and only turns on lights that have issues.
+    Plant health check - turns lights red for plants with problems or low battery.
+    Triggers on scheduled time (7am daily) or when any plant changes to 'problem' state.
+    Does not activate lights between 7pm-6:59am (except for the scheduled 7am check).
   trigger:
   - platform: time
     at: '07:00:00'
+    id: scheduled
+  - platform: state
+    entity_id:
+      - plant.plant_1
+      - plant.plant_2
+      - plant.plant_3
+      - plant.plant_4
+      - plant.plant_5
+    to: 'problem'
+    id: state_change
+  condition:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: scheduled
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: state_change
+        - condition: time
+          after: '07:00:00'
+          before: '19:00:00'
   action:
   - variables: !include plant_config.yaml
   - variables:

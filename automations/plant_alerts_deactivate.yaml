@@ -34,6 +34,10 @@
           - condition: template
             value_template: >-
               {{ (not light_has_problems) and (states(current_light) == 'on') }}
+          - condition: template
+            value_template: >-
+              {% set rgb = state_attr(current_light, 'rgb_color') %}
+              {{ rgb is not none and rgb[0] > 200 and rgb[1] < 50 and rgb[2] < 50 }}
           sequence:
           - target:
               entity_id: '{{ current_light }}'
