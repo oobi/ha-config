@@ -4,10 +4,10 @@
     Morning plant health check that turns lights red for any plants needing water.
     Runs once per day at 7am local time. Only affects lights for plants with problems.
     Sends notification summary if any plants need attention.
-  triggers:
-  - at: '07:00:00'
-    trigger: time
-  actions:
+  trigger:
+  - platform: time
+    at: '07:00:00'
+  action:
   - variables:
       problematic_plants: >
         {% set probs = [] %}
@@ -20,22 +20,38 @@
           {% endif %}
         {% endfor %}
         {{ probs }}
+      unique_lights: >-
+        {% set lights = namespace(list=[]) %}
+        {% for p in plants %}
+          {% if p.light not in lights.list %}
+            {% set lights.list = lights.list + [p.light] %}
+          {% endif %}
+        {% endfor %}
+        {{ lights.list }}
   - repeat:
-      for_each: '{{ plants }}'
+      for_each: '{{ unique_lights }}'
       sequence:
       - variables:
-          plant: '{{ repeat.item.name }}'
-          light_entity: '{{ repeat.item.light }}'
-          moist: '{{ states(repeat.item.moisture_sensor) | float(-1) }}'
-          batt: '{{ states(repeat.item.battery_sensor) | float(100) }}'
-          problem: '{{ (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) }}'
+          current_light: '{{ repeat.item }}'
+          light_has_problem: >-
+            {% set any_problem = false %}
+            {% for p in plants %}
+              {% if p.light == current_light %}
+                {% set moist = states(p.moisture_sensor) | float(-1) %}
+                {% set batt = states(p.battery_sensor) | float(100) %}
+                {% if (moist >= 0 and moist < moisture_threshold) or (batt < 100 and batt < battery_threshold) %}
+                  {% set any_problem = true %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {{ any_problem }}
       - choose:
         - conditions:
           - condition: template
-            value_template: '{{ problem }}'
+            value_template: '{{ light_has_problem }}'
           sequence:
           - target:
-              entity_id: '{{ light_entity }}'
+              entity_id: '{{ current_light }}'
             data:
               color_name: '{{ alert_color }}'
               brightness: '{{ brightness }}'

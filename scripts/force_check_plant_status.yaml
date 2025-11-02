@@ -1,0 +1,18 @@
+force_check_plant_status:
+  alias: Force Check Plant Status
+  sequence:
+  - target:
+      entity_id: automation.plant_alerts_activate_morning_check
+    action: automation.trigger
+    data:
+      skip_condition: true
+  - delay:
+      seconds: 2
+  - target:
+      entity_id: automation.plant_alerts_deactivate_auto_recovery
+    action: automation.trigger
+    data:
+      skip_condition: true
+  mode: single
+  description: Force check of all plant sensors and update light states immediately
+  icon: mdi:flower-poppy

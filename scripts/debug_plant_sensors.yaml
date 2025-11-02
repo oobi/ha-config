@@ -1,0 +1,30 @@
+debug_plant_sensors:
+  alias: Debug Plant Sensor Values
+  sequence:
+  - action: persistent_notification.create
+    data:
+      title: "\U0001F50D Plant Sensor Debug"
+      message: 'Plant 1: {{ states(''sensor.plant_1_soil_moisture'') }}% ({{ states(''sensor.plant_sensor_1_battery'')
+        }}%)
+
+        Plant 2: {{ states(''sensor.plant_2_soil_moisture'') }}% ({{ states(''sensor.plant_sensor_2_battery'')
+        }}%)
+
+        Plant 3: {{ states(''sensor.plant_3_soil_moisture'') }}% ({{ states(''sensor.plant_sensor_3_battery'')
+        }}%)
+
+        Plant 4: {{ states(''sensor.plant_4_soil_moisture'') }}% ({{ states(''sensor.plant_sensor_4_battery'')
+        }}%)
+
+        Plant 5: {{ states(''sensor.plant_5_soil_moisture'') }}% ({{ states(''sensor.plant_sensor_5_battery'')
+        }}%)
+
+        Lounge 1: {{ states(''light.lounge_1'') }}
+
+        Lounge 2: {{ states(''light.lounge_2'') }}
+
+        Bathroom 1: {{ states(''light.bathroom_1'') }}
+
+        '
+  mode: single
+  icon: mdi:bug

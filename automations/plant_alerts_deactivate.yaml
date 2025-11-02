@@ -5,10 +5,10 @@
     Runs every 5 minutes to check all lights and turns off a light only when
     ALL plants mapped to that light are healthy (above thresholds).
     Prevents missed updates and ensures multi-plant lights stay on until all recover.
-  triggers:
-  - minutes: /5
-    trigger: time_pattern
-  actions:
+  trigger:
+  - platform: time_pattern
+    minutes: /5
+  action:
   - variables:
       unique_lights: >-
         {% set lights = namespace(list=[]) %}
