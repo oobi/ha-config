@@ -3,12 +3,12 @@
   description: >
     Automatically turns off plant alert lights when plants recover.
     Runs every 5 minutes to check all lights and turns off a light only when
-    ALL plants mapped to that light are healthy (above thresholds).
-    Prevents missed updates and ensures multi-plant lights stay on until all recover.
+    ALL plants mapped to that light are healthy (no problems and battery above threshold).
   trigger:
   - platform: time_pattern
     minutes: /5
   action:
+  - variables: !include plant_config.yaml
   - variables:
       unique_lights: >-
         {{ plants | map(attribute='light') | unique | list }}
@@ -17,48 +17,25 @@
       sequence:
       - variables:
           current_light: '{{ repeat.item }}'
-          mt: '{{ moisture_threshold }}'
-          bt: '{{ battery_threshold }}'
-          all_plants: '{{ plants }}'
-      - variables:
           light_has_problems: >-
-            {% set pfl = all_plants | selectattr('light','equalto', current_light) | list %}
+            {% set pfl = plants | selectattr('light','equalto', current_light) | list %}
             {% set ns = namespace(any=false) %}
             {% for p in pfl %}
-              {% set pen = 'plant.' ~ p.name %}
-              {% if states(pen) == 'problem' %}
+              {% set prob = states(p.problem_sensor) == 'problem' %}
+              {% set batt = states(p.battery_sensor) | float(100) %}
+              {% set low_batt = batt < battery_threshold %}
+              {% if prob or low_batt %}
                 {% set ns.any = true %}
               {% endif %}
             {% endfor %}
             {{ ns.any }}
-          plant_details_for_light: >-
-            {% set pfl = all_plants | selectattr('light','equalto', current_light) | list %}
-            {% set ns = namespace(items=[]) %}
-            {% for p in pfl %}
-              {% set pen = 'plant.' ~ p.name %}
-              {% set prob = states(pen) == 'problem' %}
-              {% set why = state_attr(pen, 'problem') or 'problem' %}
-              {% set ns.items = ns.items + [p.name ~ ' (' ~ why ~ ', prob:' ~ prob ~ ')'] %}
-            {% endfor %}
-            {{ ns.items }}
-      - action: logbook.log
-        data:
-          name: "Plant Alerts"
-          message: >-
-            Deactivate check: light {{ current_light }} state={{ states(current_light) }} has_problems={{ light_has_problems }}; plants={{ plant_details_for_light | join(', ') }}
       - choose:
         - conditions:
           - condition: template
             value_template: >-
               {{ (not light_has_problems) and (states(current_light) == 'on') }}
           sequence:
-          - action: logbook.log
-            data:
-              name: "Plant Alerts"
-              message: >-
-                Turning OFF {{ current_light }} (all mapped plants healthy).
           - target:
               entity_id: '{{ current_light }}'
             action: light.turn_off
   mode: restart
-  variables: !include plant_config.yaml

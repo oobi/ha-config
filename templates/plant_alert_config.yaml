@@ -1,8 +1,0 @@
-# Centralized Plant Alert configuration as a template sensor
-# Other templates and automations can reference state_attr('sensor.plant_alert_config', ...)
-
-- sensor:
-  - name: "Plant Alert Config"
-    unique_id: plant_alert_config
-    state: "ok"
-    attributes: !include ../automations/plant_config.yaml

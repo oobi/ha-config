@@ -63,4 +63,29 @@
           brightness_pct: '{{ brightness_pct }}'
           transition: 1
         action: light.turn_on
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ lights_to_activate | length > 0 }}'
+      sequence:
+      - action: notify.mobile_app_chriss_iphone_2
+        data:
+          title: "🌿 Plant Alert"
+          message: >-
+            {% set ns = namespace(problems=[]) %}
+            {% for p in plants %}
+              {% set prob = states(p.problem_sensor) == 'problem' %}
+              {% set batt = states(p.battery_sensor) | float(100) %}
+              {% set low_batt = batt < battery_threshold %}
+              {% if prob or low_batt %}
+                {% set reasons = [] %}
+                {% if prob %}{% set reasons = reasons + ['needs water'] %}{% endif %}
+                {% if low_batt %}{% set reasons = reasons + ['battery ' ~ batt ~ '%'] %}{% endif %}
+                {% set ns.problems = ns.problems + [p.name | replace('plant_', 'Plant ') ~ ': ' ~ reasons | join(', ')] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.problems | join('\n') }}
+          data:
+            tag: plant_alerts
+            color: red
   mode: restart
