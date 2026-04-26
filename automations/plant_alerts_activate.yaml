@@ -1,114 +1,115 @@
-- id: '1760852852320'
+- id: "1760852852320"
   alias: Plant Alerts - Activate (Morning Check)
   description: >
-    Plant health check - turns lights red for plants with problems or low battery.
-    Triggers on scheduled time (7am daily) or when any plant changes to 'problem' state.
-    Does not activate lights between 7pm-6:59am (except for the scheduled 7am check).
+      Plant health check - turns lights red for plants with problems or low battery.
+      Triggers on scheduled time (7am daily) or when any plant changes to 'problem' state.
+      Does not activate lights between 7pm-6:59am (except for the scheduled 7am check).
   trigger:
-  - platform: time
-    at: '07:00:00'
-    id: scheduled
-  - platform: state
-    entity_id:
-      - plant.plant_1
-      - plant.plant_2
-      - plant.plant_3
-      - plant.plant_4
-      - plant.plant_5
-    to: 'problem'
-    id: state_change
-  condition:
-    - condition: or
-      conditions:
-      - condition: trigger
+      - trigger: time
+        at: "07:00:00"
         id: scheduled
-      - condition: and
+
+      - trigger: state
+        entity_id:
+            - plant.plant_1
+            - plant.plant_2
+            - plant.plant_3
+            - plant.plant_4
+            - plant.plant_5
+        to: "problem"
+        id: state_change
+  condition:
+      - condition: or
         conditions:
-        - condition: trigger
-          id: state_change
-        - condition: time
-          after: '07:00:00'
-          before: '19:00:00'
+            - condition: trigger
+              id: scheduled
+            - condition: and
+              conditions:
+                  - condition: trigger
+                    id: state_change
+                  - condition: time
+                    after: "07:00:00"
+                    before: "19:00:00"
   action:
-  - variables: !include plant_config.yaml
-  - variables:
-      lights_to_activate: >-
-        {% set ns = namespace(lights=[]) %}
-        {% for p in plants %}
-          {% set prob = states(p.problem_sensor) == 'problem' %}
-          {% set batt = states(p.battery_sensor) | float(100) %}
-          {% set low_batt = batt < battery_threshold %}
-          {% if (prob or low_batt) and p.light not in ns.lights %}
-            {% set ns.lights = ns.lights + [p.light] %}
-          {% endif %}
-        {% endfor %}
-        {{ ns.lights }}
-  - action: persistent_notification.create
-    data:
-      title: "🌿 Plant Alerts - Morning Check"
-      message: >-
-        Executed: {{ now().strftime('%-d %B %Y at %H:%M:%S') }}
-
-        Battery threshold: {{ battery_threshold }}%
-
-        {% set ns = namespace(actions=[]) %}
-        {% for p in plants %}
-          {% set prob = states(p.problem_sensor) == 'problem' %}
-          {% set prob_attr = state_attr(p.problem_sensor, 'problem') %}
-          {% set batt = states(p.battery_sensor) | float(100) %}
-          {% set low_batt = batt < battery_threshold %}
-          {% set needs_action = prob or low_batt %}
-          {% if needs_action %}
-            {% set reason = [] %}
-            {% if prob %}{% set reason = reason + ['plant problem: ' ~ (prob_attr if prob_attr else states(p.problem_sensor))] %}{% endif %}
-            {% if low_batt %}{% set reason = reason + ['low battery: ' ~ batt ~ '%'] %}{% endif %}
-            {% set ns.actions = ns.actions + [p.name ~ ' → ' ~ p.light ~ ' (' ~ reason | join(', ') ~ ')'] %}
-          {% endif %}
-        {% endfor %}
-
-        {% if ns.actions | length > 0 %}
-        Actions taken:
-        {% for action in ns.actions %}
-        - {{ action }}
-        {% endfor %}
-
-        Lights turned on: {{ lights_to_activate | join(', ') }}
-        {% else %}
-        All plants healthy - no action needed
-        {% endif %}
-  - repeat:
-      for_each: '{{ lights_to_activate }}'
-      sequence:
-      - target:
-          entity_id: '{{ repeat.item }}'
+      - variables: !include ../includes/plant_config.yaml
+      - variables:
+            lights_to_activate: >-
+                {% set ns = namespace(lights=[]) %}
+                {% for p in plants %}
+                  {% set prob = states(p.problem_sensor) == 'problem' %}
+                  {% set batt = states(p.battery_sensor) | float(100) %}
+                  {% set low_batt = batt < battery_threshold %}
+                  {% if (prob or low_batt) and p.light not in ns.lights %}
+                    {% set ns.lights = ns.lights + [p.light] %}
+                  {% endif %}
+                {% endfor %}
+                {{ ns.lights }}
+      - action: persistent_notification.create
         data:
-          color_name: '{{ alert_color }}'
-          brightness_pct: '{{ brightness_pct }}'
-          transition: 1
-        action: light.turn_on
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ lights_to_activate | length > 0 }}'
-      sequence:
-      - action: notify.mobile_app_chriss_iphone_2
-        data:
-          title: "🌿 Plant Alert"
-          message: >-
-            {% set ns = namespace(problems=[]) %}
-            {% for p in plants %}
-              {% set prob = states(p.problem_sensor) == 'problem' %}
-              {% set batt = states(p.battery_sensor) | float(100) %}
-              {% set low_batt = batt < battery_threshold %}
-              {% if prob or low_batt %}
-                {% set reasons = [] %}
-                {% if prob %}{% set reasons = reasons + ['needs water'] %}{% endif %}
-                {% if low_batt %}{% set reasons = reasons + ['battery ' ~ batt ~ '%'] %}{% endif %}
-                {% set ns.problems = ns.problems + [p.name | replace('plant_', 'Plant ') ~ ': ' ~ reasons | join(', ')] %}
-              {% endif %}
-            {% endfor %}
-            {{ ns.problems | join('\n') }}
-          data:
-            tag: plant_alerts
-            color: red
+            title: "🌿 Plant Alerts - Morning Check"
+            message: >-
+                Executed: {{ now().strftime('%-d %B %Y at %H:%M:%S') }}
+
+                Battery threshold: {{ battery_threshold }}%
+
+                {% set ns = namespace(actions=[]) %}
+                {% for p in plants %}
+                  {% set prob = states(p.problem_sensor) == 'problem' %}
+                  {% set prob_attr = state_attr(p.problem_sensor, 'problem') %}
+                  {% set batt = states(p.battery_sensor) | float(100) %}
+                  {% set low_batt = batt < battery_threshold %}
+                  {% set needs_action = prob or low_batt %}
+                  {% if needs_action %}
+                    {% set reason = [] %}
+                    {% if prob %}{% set reason = reason + ['plant problem: ' ~ (prob_attr if prob_attr else states(p.problem_sensor))] %}{% endif %}
+                    {% if low_batt %}{% set reason = reason + ['low battery: ' ~ batt ~ '%'] %}{% endif %}
+                    {% set ns.actions = ns.actions + [p.name ~ ' → ' ~ p.light ~ ' (' ~ reason | join(', ') ~ ')'] %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if ns.actions | length > 0 %}
+                Actions taken:
+                {% for action in ns.actions %}
+                - {{ action }}
+                {% endfor %}
+
+                Lights turned on: {{ lights_to_activate | join(', ') }}
+                {% else %}
+                All plants healthy - no action needed
+                {% endif %}
+      - repeat:
+            for_each: "{{ lights_to_activate }}"
+            sequence:
+                - target:
+                      entity_id: "{{ repeat.item }}"
+                  data:
+                      color_name: "{{ alert_color }}"
+                      brightness_pct: "{{ brightness_pct }}"
+                      transition: 1
+                  action: light.turn_on
+      - choose:
+            - conditions:
+                  - condition: template
+                    value_template: "{{ lights_to_activate | length > 0 }}"
+              sequence:
+                  - action: notify.mobile_app_chriss_iphone_2
+                    data:
+                        title: "🌿 Plant Alert"
+                        message: >-
+                            {% set ns = namespace(problems=[]) %}
+                            {% for p in plants %}
+                              {% set prob = states(p.problem_sensor) == 'problem' %}
+                              {% set batt = states(p.battery_sensor) | float(100) %}
+                              {% set low_batt = batt < battery_threshold %}
+                              {% if prob or low_batt %}
+                                {% set reasons = [] %}
+                                {% if prob %}{% set reasons = reasons + ['needs water'] %}{% endif %}
+                                {% if low_batt %}{% set reasons = reasons + ['battery ' ~ batt ~ '%'] %}{% endif %}
+                                {% set ns.problems = ns.problems + [p.name | replace('plant_', 'Plant ') ~ ': ' ~ reasons | join(', ')] %}
+                              {% endif %}
+                            {% endfor %}
+                            {{ ns.problems | join('\n') }}
+                        data:
+                            tag: plant_alerts
+                            color: red
   mode: restart

@@ -50,6 +50,9 @@ custom_components/**/*.pyc
 *.bak
 backups/
 
+# cache
+.cache/
+
 # Addons (optional - uncomment if you don't want to track addons)
 # addons/
 

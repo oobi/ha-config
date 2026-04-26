@@ -1,0 +1,13 @@
+- id: '1738267200000'
+  alias: Pool Lights Auto Off
+  mode: restart
+  trigger:
+      - platform: state
+        entity_id: switch.smart_plug_v2_f278f3_switch
+        to: "on"
+        for:
+            hours: 2
+  action:
+      - service: switch.turn_off
+        target:
+            entity_id: switch.smart_plug_v2_f278f3_switch

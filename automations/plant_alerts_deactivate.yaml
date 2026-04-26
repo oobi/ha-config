@@ -1,45 +1,45 @@
-- id: '1760852852321'
+- id: "1760852852321"
   alias: Plant Alerts - Deactivate (Auto Recovery)
   description: >
-    Automatically turns off plant alert lights when plants recover.
-    Runs every 5 minutes to check all lights and turns off a light only when
-    ALL plants mapped to that light are healthy (no problems and battery above threshold).
+      Automatically turns off plant alert lights when plants recover.
+      Runs every 5 minutes to check all lights and turns off a light only when
+      ALL plants mapped to that light are healthy (no problems and battery above threshold).
   trigger:
-  - platform: time_pattern
-    minutes: /5
+      - trigger: time_pattern
+        minutes: /5
   action:
-  - variables: !include plant_config.yaml
-  - variables:
-      unique_lights: >-
-        {{ plants | map(attribute='light') | unique | list }}
-  - repeat:
-      for_each: '{{ unique_lights }}'
-      sequence:
+      - variables: !include ../includes/plant_config.yaml
       - variables:
-          current_light: '{{ repeat.item }}'
-          light_has_problems: >-
-            {% set pfl = plants | selectattr('light','equalto', current_light) | list %}
-            {% set ns = namespace(any=false) %}
-            {% for p in pfl %}
-              {% set prob = states(p.problem_sensor) == 'problem' %}
-              {% set batt = states(p.battery_sensor) | float(100) %}
-              {% set low_batt = batt < battery_threshold %}
-              {% if prob or low_batt %}
-                {% set ns.any = true %}
-              {% endif %}
-            {% endfor %}
-            {{ ns.any }}
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: >-
-              {{ (not light_has_problems) and (states(current_light) == 'on') }}
-          - condition: template
-            value_template: >-
-              {% set rgb = state_attr(current_light, 'rgb_color') %}
-              {{ rgb is not none and rgb[0] > 200 and rgb[1] < 50 and rgb[2] < 50 }}
-          sequence:
-          - target:
-              entity_id: '{{ current_light }}'
-            action: light.turn_off
+            unique_lights: >-
+                {{ plants | map(attribute='light') | unique | list }}
+      - repeat:
+            for_each: "{{ unique_lights }}"
+            sequence:
+                - variables:
+                      current_light: "{{ repeat.item }}"
+                      light_has_problems: >-
+                          {% set pfl = plants | selectattr('light','equalto', current_light) | list %}
+                          {% set ns = namespace(any=false) %}
+                          {% for p in pfl %}
+                            {% set prob = states(p.problem_sensor) == 'problem' %}
+                            {% set batt = states(p.battery_sensor) | float(100) %}
+                            {% set low_batt = batt < battery_threshold %}
+                            {% if prob or low_batt %}
+                              {% set ns.any = true %}
+                            {% endif %}
+                          {% endfor %}
+                          {{ ns.any }}
+                - choose:
+                      - conditions:
+                            - condition: template
+                              value_template: >-
+                                  {{ (not light_has_problems) and (states(current_light) == 'on') }}
+                            - condition: template
+                              value_template: >-
+                                  {% set rgb = state_attr(current_light, 'rgb_color') %}
+                                  {{ rgb is not none and rgb[0] > 200 and rgb[1] < 50 and rgb[2] < 50 }}
+                        sequence:
+                            - target:
+                                  entity_id: "{{ current_light }}"
+                              action: light.turn_off
   mode: restart

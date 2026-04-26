@@ -16,14 +16,20 @@ http:
     trusted_proxies:
         - 172.30.33.0/24
 
-# Packages
-homeassistant:
-    packages:
-        # Solar Analytics
-        pack_1: !include solar_analytics/solar_analytics_3phase.yaml
-
 # Custom Controls
 lovelace:
     resources:
         - url: /local/custom_cards/solar_control/solar-control-card.js?v=1.1
           type: module
+
+logger:
+    default: warning
+    logs:
+        custom_components.tuya_ble: debug
+
+# Fox ESS battery
+sensor:
+    - platform: foxess
+      deviceID: 60HD15305ANM071
+      deviceSN: 60HD15305ANM071
+      apiKey: 670e24e9-8b5f-42fe-b506-eabcec3916ca

@@ -1,0 +1,13 @@
+- id: "1738267200000"
+  alias: Pool Garden Lights Auto Off
+  mode: restart
+  trigger:
+      - trigger: state
+        entity_id: switch.sonoff_1000b89a37
+        to: "on"
+        for:
+            hours: 2
+  action:
+      - service: switch.turn_off
+        target:
+            entity_id: switch.sonoff_1000b89a37

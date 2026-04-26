@@ -1,7 +1,7 @@
 debug_plant_sensors:
   alias: Debug Plant Sensor Values
   sequence:
-  - variables: !include ../automations/plant_config.yaml
+  - variables: !include ../includes/plant_config.yaml
   - action: persistent_notification.create
     data:
       title: "\U0001F50D Plant Sensor Debug"

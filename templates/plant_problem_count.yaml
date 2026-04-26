@@ -1,0 +1,29 @@
+- sensor:
+    - name: "Plant Problems"
+      unique_id: plant_problems_count
+      unit_of_measurement: "plants"
+      state: >-
+        {% set watch = state_attr('group.plant_watchlist','entity_id') %}
+        {% set plant_ids = watch if watch is iterable and (watch | count) > 0 else (states.plant | map(attribute='entity_id') | list) %}
+        {{ plant_ids | select('is_state', 'problem') | list | length }}
+      icon: >-
+        {% set watch = state_attr('group.plant_watchlist','entity_id') %}
+        {% set plant_ids = watch if watch is iterable and (watch | count) > 0 else (states.plant | map(attribute='entity_id') | list) %}
+        {% set cnt = plant_ids | select('is_state', 'problem') | list | length %}
+        {{ 'mdi:flower-alert' if cnt > 0 else 'mdi:flower' }}
+      attributes:
+        problem_plants: >-
+          {% set watch = state_attr('group.plant_watchlist','entity_id') %}
+          {% set plant_ids = watch if watch is iterable and (watch | count) > 0 else (states.plant | map(attribute='entity_id') | list) %}
+          {{ expand(plant_ids) | selectattr('state','eq','problem') | map(attribute='name') | list }}
+        summary: >-
+          {% set watch = state_attr('group.plant_watchlist','entity_id') %}
+          {% set plant_ids = watch if watch is iterable and (watch | count) > 0 else (states.plant | map(attribute='entity_id') | list) %}
+          {% set cnt = plant_ids | select('is_state', 'problem') | list | length %}
+          {% if cnt == 0 %}
+            All healthy
+          {% elif cnt == 1 %}
+            1 plant needs attention
+          {% else %}
+            {{ cnt }} plants need attention
+          {% endif %}
