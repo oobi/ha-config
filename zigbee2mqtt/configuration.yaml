@@ -1,0 +1,51 @@
+version: 5
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: Tuiboh9Sofoo9hahMie1ohhahfeewaehei0queevece0pahshai5go9keequeiju
+serial:
+  port: >-
+    /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0
+  adapter: zstack
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 175
+    - 213
+    - 207
+    - 113
+    - 160
+    - 97
+    - 31
+    - 166
+    - 63
+    - 227
+    - 181
+    - 23
+    - 191
+    - 144
+    - 82
+    - 237
+  pan_id: 20937
+  ext_pan_id:
+    - 246
+    - 69
+    - 149
+    - 27
+    - 251
+    - 187
+    - 180
+    - 84
+  enable_external_js: false
+frontend:
+  enabled: true
+  port: 8099
+homeassistant:
+  enabled: true
+devices:
+  '0xa4c138e1602d9cb9':
+    friendly_name: AC Toggle Fingerbot

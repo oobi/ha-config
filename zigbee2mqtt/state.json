@@ -1,0 +1,19 @@
+{
+    "0xa4c138e1602d9cb9": {
+        "lower": 59,
+        "delay": 0,
+        "reverse": "ON",
+        "upper": 0,
+        "battery": 29,
+        "touch": "ON",
+        "state": "OFF",
+        "mode": "click",
+        "program": {
+            "0": 255,
+            "1": 255,
+            "2": 255,
+            "3": 0
+        },
+        "linkquality": 29
+    }
+}
