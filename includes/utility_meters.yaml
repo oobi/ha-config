@@ -1,0 +1,16 @@
+electricity_consumption:
+    source: sensor.foxess_grid_consumption
+    name: Electricity Consumption
+    cycle: daily
+    tariffs:
+        - peak
+        - off_peak
+        - shoulder
+
+electricity_feedin:
+    source: sensor.foxess_feedin
+    name: Electricity Feed-in
+    cycle: daily
+    tariffs:
+        - feed_in_1
+        - feed_in_2

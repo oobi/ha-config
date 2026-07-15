@@ -1,0 +1,27 @@
+- id: electricity_feedin_rate1_start
+  alias: Electricity Feed-in - Rate 1 Start (16:00)
+  description: Switch the feed-in utility meter to the 4pm-11pm export rate
+  mode: single
+  trigger:
+      - platform: time
+        at: "16:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_feedin
+        data:
+            option: feed_in_1
+
+- id: electricity_feedin_rate2_start
+  alias: Electricity Feed-in - Rate 2 Start (23:00)
+  description: Switch the feed-in utility meter to the 11pm-4pm export rate
+  mode: single
+  trigger:
+      - platform: time
+        at: "23:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_feedin
+        data:
+            option: feed_in_2

@@ -1,0 +1,45 @@
+- id: electricity_zerohero_capture_start
+  alias: ZeroHero - Capture Grid Reading at 18:00
+  description: Record the grid consumption reading at the start of the 6pm-9pm ZeroHero window
+  mode: single
+  trigger:
+      - platform: time
+        at: "18:00:00"
+  action:
+      - service: input_number.set_value
+        target:
+            entity_id: input_number.zerohero_window_start_reading
+        data:
+            value: "{{ states('sensor.foxess_grid_consumption') | float(0) }}"
+
+- id: electricity_zerohero_evaluate
+  alias: ZeroHero - Evaluate $1 Credit at 21:00
+  description: Award the $1 credit if no grid import occurred during the 6pm-9pm window
+  mode: single
+  trigger:
+      - platform: time
+        at: "21:00:00"
+  condition:
+      - condition: template
+        value_template: >-
+            {{ (states('sensor.foxess_grid_consumption') | float(0)) -
+               (states('input_number.zerohero_window_start_reading') | float(0)) <= 0.05 }}
+  action:
+      - service: counter.increment
+        target:
+            entity_id: counter.zerohero_credits
+
+- id: electricity_zerohero_monthly_reset
+  alias: ZeroHero - Reset Credit Counter Monthly
+  description: Reset the ZeroHero credit counter on the 1st of each month to align with the billing cycle
+  mode: single
+  trigger:
+      - platform: time
+        at: "00:05:00"
+  condition:
+      - condition: template
+        value_template: "{{ now().day == 1 }}"
+  action:
+      - service: counter.reset
+        target:
+            entity_id: counter.zerohero_credits

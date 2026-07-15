@@ -1,0 +1,52 @@
+- sensor:
+    - name: "Electricity Cost Today"
+      unique_id: electricity_cost_today
+      unit_of_measurement: "AUD"
+      device_class: monetary
+      state: >-
+          {% set peak_kwh = states('sensor.electricity_consumption_peak') | float(0) %}
+          {% set shoulder_kwh = states('sensor.electricity_consumption_shoulder') | float(0) %}
+          {% set offpeak_kwh = states('sensor.electricity_consumption_off_peak') | float(0) %}
+          {% set feedin1_kwh = states('sensor.electricity_feedin_feed_in_1') | float(0) %}
+          {% set feedin2_kwh = states('sensor.electricity_feedin_feed_in_2') | float(0) %}
+          {% set zerohero_credits = states('counter.zerohero_credits') | float(0) %}
+          {% set peak_rate = 0.528 %}
+          {% set shoulder_rate = 0.407 %}
+          {% set offpeak_rate = 0 %}
+          {% set feedin1_rate = 0.02 %}
+          {% set feedin2_rate = 0 %}
+          {% set daily_charge = 1.584 %}
+          {% set consumption_cost = (peak_kwh * peak_rate) + (shoulder_kwh * shoulder_rate) + (offpeak_kwh * offpeak_rate) %}
+          {% set feedin_credit = (feedin1_kwh * feedin1_rate) + (feedin2_kwh * feedin2_rate) %}
+          {{ (consumption_cost + daily_charge - feedin_credit - zerohero_credits) | round(2) }}
+      attributes:
+        peak_kwh: "{{ states('sensor.electricity_consumption_peak') }}"
+        shoulder_kwh: "{{ states('sensor.electricity_consumption_shoulder') }}"
+        off_peak_kwh: "{{ states('sensor.electricity_consumption_off_peak') }}"
+        feed_in_1_kwh: "{{ states('sensor.electricity_feedin_feed_in_1') }}"
+        feed_in_2_kwh: "{{ states('sensor.electricity_feedin_feed_in_2') }}"
+        zerohero_credits_today: "{{ states('counter.zerohero_credits') }}"
+
+    # Current import price - for the Energy dashboard's
+    # "Use an entity with current price" cost tracking option
+    - name: "Electricity Import Rate"
+      unique_id: electricity_import_rate
+      unit_of_measurement: "AUD/kWh"
+      state: >-
+          {% set h = now().hour %}
+          {% if 16 <= h < 23 %}
+            {{ 0.528 }}
+          {% elif 11 <= h < 14 %}
+            {{ 0 }}
+          {% else %}
+            {{ 0.407 }}
+          {% endif %}
+
+    # Current feed-in (export) price - for the Energy dashboard's
+    # "Use an entity with current rate" export compensation option
+    - name: "Electricity Export Rate"
+      unique_id: electricity_export_rate
+      unit_of_measurement: "AUD/kWh"
+      state: >-
+          {% set h = now().hour %}
+          {{ 0.02 if 16 <= h < 23 else 0 }}

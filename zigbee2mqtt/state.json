@@ -6,7 +6,7 @@
         "upper": 0,
         "battery": 29,
         "touch": "ON",
-        "state": "OFF",
+        "state": "ON",
         "mode": "click",
         "program": {
             "0": 255,

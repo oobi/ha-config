@@ -10,6 +10,25 @@ script: !include_dir_merge_named scripts/
 scene: !include scenes.yaml
 template: !include_dir_merge_list templates/
 
+# Electricity tariff tracking
+utility_meter: !include includes/utility_meters.yaml
+
+counter:
+    zerohero_credits:
+        name: ZeroHero Daily Credits
+        initial: 0
+        step: 1
+        restore: true
+
+input_number:
+    zerohero_window_start_reading:
+        name: ZeroHero Window Start Reading
+        min: 0
+        max: 999999
+        step: 0.01
+        mode: box
+        unit_of_measurement: kWh
+
 #cloudflared tunnel
 http:
     use_x_forwarded_for: true

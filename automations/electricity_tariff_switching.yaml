@@ -1,0 +1,55 @@
+- id: electricity_tariff_off_peak_start
+  alias: Electricity Tariff - Off-Peak Start (11:00)
+  description: Switch the consumption utility meter to the off-peak tariff
+  mode: single
+  trigger:
+      - platform: time
+        at: "11:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_consumption
+        data:
+            option: off_peak
+
+- id: electricity_tariff_shoulder_midday_start
+  alias: Electricity Tariff - Shoulder Start (14:00)
+  description: Switch the consumption utility meter to the shoulder tariff
+  mode: single
+  trigger:
+      - platform: time
+        at: "14:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_consumption
+        data:
+            option: shoulder
+
+- id: electricity_tariff_peak_start
+  alias: Electricity Tariff - Peak Start (16:00)
+  description: Switch the consumption utility meter to the peak tariff
+  mode: single
+  trigger:
+      - platform: time
+        at: "16:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_consumption
+        data:
+            option: peak
+
+- id: electricity_tariff_shoulder_evening_start
+  alias: Electricity Tariff - Shoulder Start (23:00)
+  description: Switch the consumption utility meter to the shoulder tariff
+  mode: single
+  trigger:
+      - platform: time
+        at: "23:00:00"
+  action:
+      - service: select.select_option
+        target:
+            entity_id: select.electricity_consumption
+        data:
+            option: shoulder
