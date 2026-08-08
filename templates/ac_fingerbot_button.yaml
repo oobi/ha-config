@@ -1,0 +1,8 @@
+- button:
+    - name: "AC Toggle Fingerbot"
+      unique_id: ac_toggle_fingerbot_press
+      icon: mdi:air-conditioner
+      press:
+        action: switch.turn_on
+        target:
+          entity_id: switch.ac_toggle_fingerbot
