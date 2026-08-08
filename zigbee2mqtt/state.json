@@ -4,7 +4,7 @@
         "delay": 0,
         "reverse": "ON",
         "upper": 0,
-        "battery": 29,
+        "battery": 63,
         "touch": "ON",
         "state": "ON",
         "mode": "click",
@@ -14,6 +14,26 @@
             "2": 255,
             "3": 0
         },
-        "linkquality": 29
+        "linkquality": 94
+    },
+    "0xcc36bbfffe009be5": {
+        "battery": 100,
+        "temperature": 25.3,
+        "humidity": 40.6,
+        "comfort_temperature_min": 19,
+        "comfort_temperature_max": 27,
+        "comfort_humidity_min": 40,
+        "comfort_humidity_max": 60,
+        "temperature_units": "celsius",
+        "temperature_calibration": 0,
+        "humidity_calibration": 0,
+        "update": {
+            "state": "idle",
+            "installed_version": 8960,
+            "latest_version": 8960,
+            "latest_source": "https://raw.githubusercontent.com/Koenkk/zigbee-OTA/master/images/Sonoff/snzb-02d_v2.3.0.ota",
+            "latest_release_notes": null
+        },
+        "linkquality": 58
     }
 }

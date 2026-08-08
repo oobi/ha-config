@@ -49,3 +49,5 @@ homeassistant:
 devices:
   '0xa4c138e1602d9cb9':
     friendly_name: AC Toggle Fingerbot
+  '0xcc36bbfffe009be5':
+    friendly_name: Temp and Humidity Sensor
