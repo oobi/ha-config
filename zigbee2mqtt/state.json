@@ -6,7 +6,7 @@
         "upper": 0,
         "battery": 63,
         "touch": "ON",
-        "state": "OFF",
+        "state": "ON",
         "mode": "click",
         "program": {
             "0": 255,
@@ -18,8 +18,8 @@
     },
     "0xcc36bbfffe009be5": {
         "battery": 100,
-        "temperature": 23.1,
-        "humidity": 42.6,
+        "temperature": 21.5,
+        "humidity": 44.6,
         "comfort_temperature_min": 19,
         "comfort_temperature_max": 27,
         "comfort_humidity_min": 40,

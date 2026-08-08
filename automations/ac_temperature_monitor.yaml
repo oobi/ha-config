@@ -1,0 +1,67 @@
+- id: ac_temperature_monitor_enforce
+  alias: AC Temperature Monitor - Enforce Comfort Range
+  description: >
+      While armed, toggles the AC fingerbot to keep the room temperature within
+      the configured comfort range (input_number.ac_comfort_temp_low/high).
+      Since there is no real AC on/off feedback yet, input_boolean.ac_assumed_running
+      tracks what we last told the AC to do.
+  mode: single
+  trigger:
+      - trigger: numeric_state
+        entity_id: sensor.temp_and_humidity_sensor_temperature
+        above: input_number.ac_comfort_temp_high
+        id: too_hot
+
+      - trigger: numeric_state
+        entity_id: sensor.temp_and_humidity_sensor_temperature
+        below: input_number.ac_comfort_temp_low
+        id: too_cold
+  condition:
+      - condition: state
+        entity_id: input_boolean.ac_monitor_armed
+        state: "on"
+  action:
+      - choose:
+            - conditions:
+                  - condition: trigger
+                    id: too_hot
+                  - condition: state
+                    entity_id: input_boolean.ac_assumed_running
+                    state: "off"
+              sequence:
+                  - action: button.press
+                    target:
+                        entity_id: button.ac_toggle_fingerbot
+                  - action: input_boolean.turn_on
+                    target:
+                        entity_id: input_boolean.ac_assumed_running
+
+            - conditions:
+                  - condition: trigger
+                    id: too_cold
+                  - condition: state
+                    entity_id: input_boolean.ac_assumed_running
+                    state: "on"
+              sequence:
+                  - action: button.press
+                    target:
+                        entity_id: button.ac_toggle_fingerbot
+                  - action: input_boolean.turn_off
+                    target:
+                        entity_id: input_boolean.ac_assumed_running
+
+- id: ac_temperature_monitor_arm_sync
+  alias: AC Temperature Monitor - Assume Running When Armed
+  description: >
+      The AC is started manually and the monitor is armed as a separate manual
+      action. When arming, assume the AC was just turned on so the enforce
+      automation starts from a known state.
+  mode: single
+  trigger:
+      - trigger: state
+        entity_id: input_boolean.ac_monitor_armed
+        to: "on"
+  action:
+      - action: input_boolean.turn_on
+        target:
+            entity_id: input_boolean.ac_assumed_running
