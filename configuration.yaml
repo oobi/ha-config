@@ -34,7 +34,6 @@ input_number:
         max: 30
         step: 0.1
         mode: box
-        initial: 22
         unit_of_measurement: "°C"
         icon: mdi:thermometer-low
     ac_comfort_temp_high:
@@ -43,9 +42,16 @@ input_number:
         max: 30
         step: 0.1
         mode: box
-        initial: 24
         unit_of_measurement: "°C"
         icon: mdi:thermometer-high
+    ac_max_runtime_hours:
+        name: AC Max Runtime Hours
+        min: 1
+        max: 12
+        step: 0.5
+        mode: box
+        unit_of_measurement: h
+        icon: mdi:timer-alert-outline
 
 input_boolean:
     ac_monitor_armed:
@@ -55,11 +61,27 @@ input_boolean:
         name: AC Assumed Running
         icon: mdi:air-conditioner
 
+input_datetime:
+    ac_quiet_hours_start:
+        name: AC Quiet Hours Start
+        has_date: false
+        has_time: true
+
+input_select:
+    ac_mode:
+        name: AC Mode
+        options:
+            - cool
+            - heat
+        icon: mdi:sun-snowflake-variant
+
 #cloudflared tunnel
-http:
-    use_x_forwarded_for: true
-    trusted_proxies:
-        - 172.30.33.0/24
+# deprecated -
+# see  Settings > System > Network
+# http:
+#     use_x_forwarded_for: true
+#     trusted_proxies:
+#         - 172.30.33.0/24
 
 # Custom Controls
 lovelace:
@@ -78,3 +100,20 @@ sensor:
       deviceID: 60HD15305ANM071
       deviceSN: 60HD15305ANM071
       apiKey: 670e24e9-8b5f-42fe-b506-eabcec3916ca
+
+    # AC runtime tracking (based on assumed running state - see automations/ac_temperature_monitor.yaml)
+    - platform: history_stats
+      name: AC Runtime Today
+      entity_id: input_boolean.ac_assumed_running
+      state: "on"
+      type: time
+      start: "{{ today_at('00:00') }}"
+      end: "{{ now() }}"
+
+    - platform: history_stats
+      name: AC Activations Today
+      entity_id: input_boolean.ac_assumed_running
+      state: "on"
+      type: count
+      start: "{{ today_at('00:00') }}"
+      end: "{{ now() }}"

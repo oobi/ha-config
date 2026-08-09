@@ -3,6 +3,9 @@
   description: >
       While armed, toggles the AC fingerbot to keep the room temperature within
       the configured comfort range (input_number.ac_comfort_temp_low/high).
+      input_select.ac_mode controls the direction: in "cool" mode, the AC turns
+      on above Comfort High and off below Comfort Low. In "heat" mode, this is
+      reversed - it turns on below Comfort Low and off above Comfort High.
       Since there is no real AC on/off feedback yet, input_boolean.ac_assumed_running
       tracks what we last told the AC to do.
   mode: single
@@ -10,11 +13,15 @@
       - trigger: numeric_state
         entity_id: sensor.temp_and_humidity_sensor_temperature
         above: input_number.ac_comfort_temp_high
+        for:
+            seconds: 30
         id: too_hot
 
       - trigger: numeric_state
         entity_id: sensor.temp_and_humidity_sensor_temperature
         below: input_number.ac_comfort_temp_low
+        for:
+            seconds: 30
         id: too_cold
   condition:
       - condition: state
@@ -22,9 +29,13 @@
         state: "on"
   action:
       - choose:
+            # Cooling mode: too hot -> turn AC on
             - conditions:
                   - condition: trigger
                     id: too_hot
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: cool
                   - condition: state
                     entity_id: input_boolean.ac_assumed_running
                     state: "off"
@@ -36,9 +47,49 @@
                     target:
                         entity_id: input_boolean.ac_assumed_running
 
+            # Cooling mode: too cold -> turn AC off
             - conditions:
                   - condition: trigger
                     id: too_cold
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: cool
+                  - condition: state
+                    entity_id: input_boolean.ac_assumed_running
+                    state: "on"
+              sequence:
+                  - action: button.press
+                    target:
+                        entity_id: button.ac_toggle_fingerbot
+                  - action: input_boolean.turn_off
+                    target:
+                        entity_id: input_boolean.ac_assumed_running
+
+            # Heating mode: too cold -> turn AC on
+            - conditions:
+                  - condition: trigger
+                    id: too_cold
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: heat
+                  - condition: state
+                    entity_id: input_boolean.ac_assumed_running
+                    state: "off"
+              sequence:
+                  - action: button.press
+                    target:
+                        entity_id: button.ac_toggle_fingerbot
+                  - action: input_boolean.turn_on
+                    target:
+                        entity_id: input_boolean.ac_assumed_running
+
+            # Heating mode: too hot -> turn AC off
+            - conditions:
+                  - condition: trigger
+                    id: too_hot
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: heat
                   - condition: state
                     entity_id: input_boolean.ac_assumed_running
                     state: "on"
@@ -65,3 +116,145 @@
       - action: input_boolean.turn_on
         target:
             entity_id: input_boolean.ac_assumed_running
+
+- id: ac_temperature_monitor_not_cooling_alert
+  alias: AC Temperature Monitor - Not Reaching Comfort Alert
+  description: >
+      Watchdog only - takes no action on the fingerbot. If the AC is assumed
+      running but the room stays on the wrong side of the comfort range for an
+      extended period (too hot in cool mode, too cold in heat mode), it likely
+      means a press was missed/desynced (see ac_assumed_running). Alerts so it
+      can be checked and corrected manually rather than blindly re-pressing the
+      fingerbot, which could turn a working AC off.
+  mode: single
+  trigger:
+      - trigger: numeric_state
+        entity_id: sensor.temp_and_humidity_sensor_temperature
+        above: input_number.ac_comfort_temp_high
+        for:
+            minutes: 15
+        id: still_hot
+
+      - trigger: numeric_state
+        entity_id: sensor.temp_and_humidity_sensor_temperature
+        below: input_number.ac_comfort_temp_low
+        for:
+            minutes: 15
+        id: still_cold
+  condition:
+      - condition: state
+        entity_id: input_boolean.ac_monitor_armed
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.ac_assumed_running
+        state: "on"
+      - condition: or
+        conditions:
+            - condition: and
+              conditions:
+                  - condition: trigger
+                    id: still_hot
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: cool
+            - condition: and
+              conditions:
+                  - condition: trigger
+                    id: still_cold
+                  - condition: state
+                    entity_id: input_select.ac_mode
+                    state: heat
+  action:
+      - action: persistent_notification.create
+        data:
+            title: "⚠️ AC may not be reaching comfort range"
+            message: >-
+                AC Temperature Monitor believes the AC is running in
+                {{ states('input_select.ac_mode') }} mode, but
+                {{ states('sensor.temp_and_humidity_sensor_temperature') }}°C
+                has stayed on the wrong side of the comfort range
+                ({{ states('input_number.ac_comfort_temp_low') }}-{{ states('input_number.ac_comfort_temp_high') }}°C)
+                for 15+ minutes. Check the AC manually and correct
+                "AC Assumed Running" if it's out of sync.
+
+- id: ac_temperature_monitor_max_runtime_safety
+  alias: AC Temperature Monitor - Max Runtime Safety Cutoff
+  description: >
+      Safety net against leaving the monitor armed indefinitely. Checks
+      periodically how long input_boolean.ac_monitor_armed has been
+      continuously on; if it exceeds input_number.ac_max_runtime_hours, forces
+      the AC off (if assumed running), disarms the monitor, and notifies.
+  mode: single
+  trigger:
+      - trigger: time_pattern
+        minutes: "/5"
+  condition:
+      - condition: state
+        entity_id: input_boolean.ac_monitor_armed
+        state: "on"
+      - condition: template
+        value_template: >-
+            {{ (as_timestamp(now()) - as_timestamp(states.input_boolean.ac_monitor_armed.last_changed))
+               / 3600 >= states('input_number.ac_max_runtime_hours') | float(4) }}
+  action:
+      - if:
+            - condition: state
+              entity_id: input_boolean.ac_assumed_running
+              state: "on"
+        then:
+            - action: button.press
+              target:
+                  entity_id: button.ac_toggle_fingerbot
+            - action: input_boolean.turn_off
+              target:
+                  entity_id: input_boolean.ac_assumed_running
+      - action: input_boolean.turn_off
+        target:
+            entity_id: input_boolean.ac_monitor_armed
+      - action: persistent_notification.create
+        data:
+            title: "⏱️ AC Monitor - Safety Cutoff"
+            message: >-
+                AC Temperature Monitor was armed for longer than
+                {{ states('input_number.ac_max_runtime_hours') }} hours, so it
+                was automatically turned off and disarmed as a safety
+                precaution. Re-arm manually if this was intentional.
+
+- id: ac_temperature_monitor_quiet_hours_safety
+  alias: AC Temperature Monitor - Quiet Hours Auto Disarm
+  description: >
+      Second safety net specifically for overnight use. If the monitor is
+      still armed at the configured quiet hours start time, forces the AC
+      off (if assumed running), disarms the monitor, and notifies -
+      independent of how long it has been armed.
+  mode: single
+  trigger:
+      - trigger: time
+        at: input_datetime.ac_quiet_hours_start
+  condition:
+      - condition: state
+        entity_id: input_boolean.ac_monitor_armed
+        state: "on"
+  action:
+      - if:
+            - condition: state
+              entity_id: input_boolean.ac_assumed_running
+              state: "on"
+        then:
+            - action: button.press
+              target:
+                  entity_id: button.ac_toggle_fingerbot
+            - action: input_boolean.turn_off
+              target:
+                  entity_id: input_boolean.ac_assumed_running
+      - action: input_boolean.turn_off
+        target:
+            entity_id: input_boolean.ac_monitor_armed
+      - action: persistent_notification.create
+        data:
+            title: "🌙 AC Monitor - Quiet Hours Auto Disarm"
+            message: >-
+                AC Temperature Monitor was still armed at
+                {{ states('input_datetime.ac_quiet_hours_start') }}, so it was
+                automatically turned off and disarmed for the night.
+                Re-arm manually if this was intentional.
