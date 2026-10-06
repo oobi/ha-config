@@ -106,13 +106,34 @@
   description: >
       The AC is started manually and the monitor is armed as a separate manual
       action. When arming, assume the AC was just turned on so the enforce
-      automation starts from a known state.
+      automation starts from a known state, and pick cool/heat mode from the
+      current room temperature (above the comfort range -> cool, below ->
+      heat; within it, the mode is left unchanged).
   mode: single
   trigger:
       - trigger: state
         entity_id: input_boolean.ac_monitor_armed
         to: "on"
   action:
+      - variables:
+            temp: "{{ states('sensor.temp_and_humidity_sensor_temperature') | float(none) }}"
+            low: "{{ states('input_number.ac_comfort_temp_low') | float }}"
+            high: "{{ states('input_number.ac_comfort_temp_high') | float }}"
+      - choose:
+            - conditions: "{{ temp is not none and temp > high }}"
+              sequence:
+                  - action: input_select.select_option
+                    target:
+                        entity_id: input_select.ac_mode
+                    data:
+                        option: cool
+            - conditions: "{{ temp is not none and temp < low }}"
+              sequence:
+                  - action: input_select.select_option
+                    target:
+                        entity_id: input_select.ac_mode
+                    data:
+                        option: heat
       - action: input_boolean.turn_on
         target:
             entity_id: input_boolean.ac_assumed_running
@@ -258,3 +279,22 @@
                 {{ states('input_datetime.ac_quiet_hours_start') }}, so it was
                 automatically turned off and disarmed for the night.
                 Re-arm manually if this was intentional.
+
+- id: ac_temperature_monitor_disarm_kill
+  alias: AC Temperature Monitor - Turn AC Off When Disarmed
+  description: >
+      However the monitor gets disarmed (voice, dashboard, script), make sure
+      the AC doesn't keep running unmonitored. If it's assumed running, runs
+      script.ac_off to press the fingerbot. If it's not assumed running (the
+      monitor already turned it off on reaching comfort range), nothing to do.
+  mode: single
+  trigger:
+      - trigger: state
+        entity_id: input_boolean.ac_monitor_armed
+        to: "off"
+  condition:
+      - condition: state
+        entity_id: input_boolean.ac_assumed_running
+        state: "on"
+  action:
+      - action: script.ac_off

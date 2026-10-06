@@ -1,0 +1,11 @@
+- switch:
+    - name: "Aircon"
+      unique_id: ac_voice_switch
+      icon: mdi:air-conditioner
+      # On = monitor armed (an AC session is active), even while the monitor
+      # has the AC idling in the comfort range
+      state: "{{ is_state('input_boolean.ac_monitor_armed', 'on') }}"
+      turn_on:
+        action: script.ac_on
+      turn_off:
+        action: script.ac_off
