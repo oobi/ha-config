@@ -1,0 +1,18 @@
+- id: bedroom_alarm_7am
+  alias: Bedroom Alarm - 7am Soft Alarm
+  description: >
+      When input_boolean.bedroom_alarm_enabled is on, rings the soft alarm at
+      7am via script.bedroom_alarm_start, on whichever bedroom speakers have
+      their "Alarm - <room>" toggle on. Each speaker is rung independently by
+      script.bedroom_alarm_ring, which handles volume ramp, snooze (pause) and
+      dismiss (stop) per room.
+  mode: single
+  trigger:
+      - trigger: time
+        at: "07:00:00"
+  condition:
+      - condition: state
+        entity_id: input_boolean.bedroom_alarm_enabled
+        state: "on"
+  action:
+      - action: script.bedroom_alarm_start

@@ -1,0 +1,149 @@
+bedroom_alarm_ring:
+  alias: Bedroom Alarm - Ring Speaker
+  description: >
+      Rings the soft alarm on one speaker (started per-speaker by
+      automations/bedroom_alarm.yaml, so each room is independent). Plays the
+      chime continuously for 5 minutes, nudging the volume up each minute,
+      then gives up. In the room:
+        - "Hey Google, snooze" (a Google Home routine that sets the speaker
+          volume to 5%) = snooze 9 minutes, then ring again from the start
+        - "Hey Google, stop" / "pause" / tap the speaker = dismiss
+  mode: parallel
+  icon: mdi:alarm-bell
+  fields:
+    speaker:
+      name: Speaker
+      required: true
+      selector:
+        entity:
+          domain: media_player
+  variables:
+    # One volume per minute of ringing - the length of this list is how many
+    # minutes it rings for (soft_alarm.wav is 5m10s, so max 5).
+    volumes: [0.15, 0.2, 0.25, 0.3, 0.35]
+    snooze_minutes: 9
+    finished: false
+  sequence:
+  - repeat:
+      while: "{{ not finished }}"
+      sequence:
+      - action: media_player.volume_set
+        target:
+          entity_id: "{{ speaker }}"
+        data:
+          volume_level: "{{ volumes[0] }}"
+      - action: media_player.play_media
+        target:
+          entity_id: "{{ speaker }}"
+        data:
+          media_content_id: /local/sounds/soft_alarm.wav
+          media_content_type: music
+      - wait_template: "{{ is_state(speaker, 'playing') }}"
+        timeout:
+          seconds: 15
+      - variables:
+          outcome: timeout
+      # Ring for one minute per volume step, watching for pause/stop
+      - repeat:
+          for_each: "{{ volumes }}"
+          sequence:
+          - if: "{{ outcome == 'timeout' }}"
+            then:
+            - action: media_player.volume_set
+              target:
+                entity_id: "{{ speaker }}"
+              data:
+                volume_level: "{{ repeat.item }}"
+            # Google reports "Hey Google, stop", "pause" and a tap all as
+            # paused, so any of those dismisses. Snooze is signalled by the
+            # "snooze" Google Home routine dropping the volume to 5% (the
+            # alarm itself never goes below 15%).
+            - wait_for_trigger:
+              - trigger: template
+                value_template: "{{ (state_attr(speaker, 'volume_level') or 1) < 0.1 }}"
+                id: snooze
+              - trigger: template
+                value_template: "{{ states(speaker) in ['paused', 'idle', 'off'] }}"
+                id: dismiss
+              timeout:
+                minutes: 1
+            - if: "{{ wait.trigger is not none }}"
+              then:
+              - variables:
+                  outcome: "{{ wait.trigger.id }}"
+      - choose:
+        - conditions: "{{ outcome == 'snooze' }}"
+          sequence:
+          - action: media_player.media_stop
+            continue_on_error: true
+            target:
+              entity_id: "{{ speaker }}"
+          - delay:
+              minutes: "{{ snooze_minutes }}"
+        - conditions: "{{ outcome == 'timeout' }}"
+          sequence:
+          # Rang the full 5 minutes unanswered - give up
+          - action: media_player.media_stop
+            continue_on_error: true
+            target:
+              entity_id: "{{ speaker }}"
+          - variables:
+              finished: true
+        default:
+        - variables:
+            finished: true
+
+bedroom_alarm_start:
+  alias: Bedroom Alarm - Ring Now
+  description: >
+      Rings the alarm right now on every bedroom speaker whose "Alarm - <room>"
+      toggle is on. Used by the 7am automation and the "Alarm now" button
+      (which works even when the 7am alarm is switched off).
+  mode: single
+  icon: mdi:alarm-bell
+  variables:
+    speakers: >
+      {% set map = {
+          'input_boolean.bedroom_alarm_master_bedroom': 'media_player.master_bedroom_wifi',
+          'input_boolean.bedroom_alarm_dexter': 'media_player.dexters_speaker',
+          'input_boolean.bedroom_alarm_loki': 'media_player.loki_s_bedroom_speaker'
+      } %}
+      {% set ns = namespace(out=[]) %}
+      {% for toggle, player in map.items() if is_state(toggle, 'on') %}
+        {% set ns.out = ns.out + [player] %}
+      {% endfor %}
+      {{ ns.out }}
+  sequence:
+  - repeat:
+      for_each: "{{ speakers }}"
+      sequence:
+      - action: script.turn_on
+        target:
+          entity_id: script.bedroom_alarm_ring
+        data:
+          variables:
+            speaker: "{{ repeat.item }}"
+
+bedroom_alarm_stop:
+  alias: Bedroom Alarm - Stop All
+  description: Dismisses the bedroom alarm in every room, including any pending snoozes.
+  mode: single
+  icon: mdi:alarm-off
+  sequence:
+  - action: script.turn_off
+    target:
+      entity_id: script.bedroom_alarm_ring
+  # Cast speakers error if told to stop with nothing playing, so only stop
+  # the ones that are actually playing/paused
+  - variables:
+      active: >
+        {{ ['media_player.master_bedroom_wifi',
+            'media_player.dexters_speaker',
+            'media_player.loki_s_bedroom_speaker']
+           | select('is_state', ['playing', 'paused', 'buffering']) | list }}
+  - if: "{{ active | count > 0 }}"
+    then:
+    - action: media_player.media_stop
+      continue_on_error: true
+      target:
+        entity_id: "{{ active }}"

@@ -60,6 +60,19 @@ input_boolean:
     ac_assumed_running:
         name: AC Assumed Running
         icon: mdi:air-conditioner
+    # Bedroom alarm (see automations/bedroom_alarm.yaml)
+    bedroom_alarm_enabled:
+        name: Bedroom Alarm
+        icon: mdi:alarm
+    bedroom_alarm_master_bedroom:
+        name: Alarm - Master Bedroom
+        icon: mdi:speaker
+    bedroom_alarm_dexter:
+        name: Alarm - Dexter's Room
+        icon: mdi:speaker
+    bedroom_alarm_loki:
+        name: Alarm - Loki's Room
+        icon: mdi:speaker
 
 input_datetime:
     ac_quiet_hours_start:
