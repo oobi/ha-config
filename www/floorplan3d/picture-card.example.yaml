@@ -1,0 +1,8 @@
+# Optional new card. Not installed in any dashboard.
+type: picture
+image: /local/floorplan3d/upper-labelled.png?v=2
+tap_action:
+  action: url
+  url_path: /local/floorplan3d/index.html
+hold_action:
+  action: none

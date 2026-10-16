@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 930 958">
+<rect width="930" height="958" fill="#f7f5ef"/>
+<polygon points="241,405 573,405 573,459 518,459 518,662 442,662 442,459 241,459" fill="#eee4d4"/>
+<polygon points="46,662 893,662 893,893 658,893 658,746 46,746" fill="#d5c6af"/>
+<polygon points="52,227 223,227 223,405 241,405 241,459 52,459" fill="#eee4d4"/>
+<polygon points="269,227 341,227 341,374 269,374 269,327 223,327 223,279 269,279" fill="#d6dfd9"/>
+<polygon points="341,227 460,227 460,405 341,405" fill="#d6dfd9"/>
+<polygon points="460,227 710,227 710,459 573,459 573,405 460,405" fill="#eee4d4"/>
+<polygon points="710,227 885,227 885,459 710,459" fill="#eee4d4"/>
+<polygon points="52,459 284,459 284,589 237,589 237,662 52,662" fill="#eee4d4"/>
+<polygon points="284,459 442,459 442,662 237,662 237,589 284,589" fill="#eee4d4"/>
+<polygon points="518,459 885,459 885,662 518,662" fill="#eee4d4"/>
+<polygon points="46,164 596,164 596,139 674,139 674,63 893,63 893,227 46,227" fill="#d5c6af"/>
+<path d="M52 227 L885 227" stroke="#42483f" stroke-width="7"/>
+<path d="M52 662 L885 662" stroke="#42483f" stroke-width="7"/>
+<path d="M52 227 L52 662" stroke="#42483f" stroke-width="7"/>
+<path d="M885 227 L885 662" stroke="#42483f" stroke-width="7"/>
+<path d="M52 459 L885 459" stroke="#42483f" stroke-width="7"/>
+<path d="M442 459 L442 662" stroke="#42483f" stroke-width="7"/>
+<path d="M518 459 L518 662" stroke="#42483f" stroke-width="7"/>
+<path d="M284 459 L284 589" stroke="#42483f" stroke-width="7"/>
+<path d="M237 589 L237 662" stroke="#42483f" stroke-width="7"/>
+<path d="M237 514 L284 514" stroke="#42483f" stroke-width="7"/>
+<path d="M237 589 L284 589" stroke="#42483f" stroke-width="7"/>
+<path d="M237 514 L237 589" stroke="#42483f" stroke-width="7"/>
+<path d="M284 589 L284 662" stroke="#42483f" stroke-width="7"/>
+<path d="M223 227 L223 405" stroke="#42483f" stroke-width="7"/>
+<path d="M269 227 L269 279" stroke="#42483f" stroke-width="7"/>
+<path d="M223 279 L269 279" stroke="#42483f" stroke-width="7"/>
+<path d="M223 327 L269 327" stroke="#42483f" stroke-width="7"/>
+<path d="M269 327 L269 405" stroke="#42483f" stroke-width="7"/>
+<path d="M341 227 L341 405" stroke="#42483f" stroke-width="7"/>
+<path d="M269 374 L341 374" stroke="#42483f" stroke-width="7"/>
+<path d="M223 405 L460 405" stroke="#42483f" stroke-width="7"/>
+<path d="M241 405 L241 459" stroke="#42483f" stroke-width="7"/>
+<path d="M460 227 L460 405" stroke="#42483f" stroke-width="7"/>
+<path d="M460 405 L573 405" stroke="#42483f" stroke-width="7"/>
+<path d="M573 405 L573 459" stroke="#42483f" stroke-width="7"/>
+<path d="M710 227 L710 459" stroke="#42483f" stroke-width="7"/>
+<path d="M76 227 L154 227" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M170 227 L208 227" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M208 227 L208 263" stroke="#9a8966" stroke-width="3"/>
+<path d="M277 227 L331 227" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M365 227 L432 227" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M470 227 L505 227" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M470 227 L470 260" stroke="#9a8966" stroke-width="3"/>
+<path d="M553 227 L673 227" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M736 227 L856 227" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M76 662 L176 662" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M311 662 L405 662" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M604 662 L835 662" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M885 503 L885 585" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M246 459 L278 459" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M278 459 L278 489" stroke="#9a8966" stroke-width="3"/>
+<path d="M295 459 L332 459" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M295 459 L295 494" stroke="#9a8966" stroke-width="3"/>
+<path d="M528 459 L565 459" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M757 459 L841 459" stroke="#b5d6d6" stroke-width="9"/>
+<path d="M241 410 L241 451" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M241 451 L203 451" stroke="#9a8966" stroke-width="3"/>
+<path d="M412 405 L450 405" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M450 405 L450 369" stroke="#9a8966" stroke-width="3"/>
+<path d="M470 405 L505 405" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M470 405 L470 372" stroke="#9a8966" stroke-width="3"/>
+<path d="M710 287 L710 329" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M223 283 L223 321" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M223 236 L223 273" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M223 236 L223 273" stroke="#b4a686" stroke-width="3"/>
+<path d="M223 335 L223 397" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M223 335 L223 397" stroke="#b4a686" stroke-width="3"/>
+<path d="M237 522 L237 580" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M237 522 L237 580" stroke="#b4a686" stroke-width="3"/>
+<path d="M284 597 L284 654" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M284 597 L284 654" stroke="#b4a686" stroke-width="3"/>
+<path d="M278 405 L332 405" stroke="#f7f5ef" stroke-width="9"/>
+<path d="M278 405 L332 405" stroke="#b4a686" stroke-width="3"/>
+<path d="M447 459 L511 459" stroke="#f7f5ef" stroke-width="9"/>
+<text x="390" y="435" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Hall</text>
+<text x="780" y="795" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Front Deck</text>
+<text x="143" y="352" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Master bedroom</text>
+<text x="300" y="301" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Ensuite</text>
+<text x="401" y="331" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Bathroom</text>
+<text x="590" y="335" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Kitchen</text>
+<text x="800" y="350" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Dining</text>
+<text x="145" y="558" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Dexter’s room</text>
+<text x="363" y="564" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Loki’s room</text>
+<text x="702" y="560" font-family="sans-serif" font-size="12" fill="#4c5549" text-anchor="middle">Living room</text>
+<text x="465" y="930" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#697363">REFERENCE TRACE · approximate positions; cyan = glazing, tan = door leaves</text></svg>

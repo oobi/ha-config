@@ -1,0 +1,116 @@
+title: Energy
+path: energy
+icon: mdi:solar-power-variant
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      column_span: 3
+      cards:
+          - type: energy-date-selection
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Right now
+            icon: mdi:flash
+          - type: tile
+            entity: sensor.foxess_pv_power
+            name: Solar
+            icon: mdi:solar-power-variant
+            color: amber
+            features_position: bottom
+            features:
+                - type: trend-graph
+                  hours_to_show: 24
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.foxess_load_power
+            name: House load
+            icon: mdi:home-lightning-bolt
+            color: blue
+            features_position: bottom
+            features:
+                - type: trend-graph
+                  hours_to_show: 24
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.foxess_bat_soc1
+            name: Battery
+            color: green
+          - type: tile
+            entity: sensor.foxess_bat_charge_power
+            name: Charging
+            icon: mdi:battery-arrow-up
+            color: green
+          - type: tile
+            entity: sensor.foxess_grid_consumption_power
+            name: From grid
+            icon: mdi:transmission-tower-import
+            color: red
+          - type: tile
+            entity: sensor.foxess_feedin_power
+            name: To grid
+            icon: mdi:transmission-tower-export
+            color: teal
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Flow
+            icon: mdi:transit-connection-variant
+          - type: energy-distribution
+            link_dashboard: true
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Tariff & credits
+            icon: mdi:currency-usd
+          - type: tile
+            entity: sensor.electricity_import_rate
+            name: Buying at
+          - type: tile
+            entity: sensor.electricity_export_rate
+            name: Selling at
+          - type: tile
+            entity: sensor.electricity_cost_today
+            name: Cost today
+            grid_options:
+                columns: full
+          - type: tile
+            entity: counter.zerohero_credits
+            name: ZeroHero credits this month
+            icon: mdi:cash-check
+            color: green
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.energy_production_today_remaining
+            name: Solar still to come today
+            icon: mdi:weather-sunny
+            color: amber
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.energy_production_tomorrow
+            name: Forecast tomorrow
+            icon: mdi:weather-partly-cloudy
+            grid_options:
+                columns: full
+
+    - type: grid
+      column_span: 3
+      cards:
+          - type: energy-usage-graph
+            grid_options:
+                columns: full
+          - type: energy-solar-graph
+            grid_options:
+                columns: full

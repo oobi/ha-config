@@ -1,0 +1,170 @@
+title: Climate
+path: climate
+icon: mdi:thermostat
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: Aircon
+            icon: mdi:air-conditioner
+          - type: custom:mushroom-template-card
+            entity: switch.aircon
+            primary: "{{ 'Aircon on' if is_state('switch.aircon', 'on') else 'Aircon off' }}"
+            secondary: >-
+                {% if is_state('switch.aircon', 'on') %}
+                {{ states('input_select.ac_mode') | title }}ing ·
+                {{ 'compressor running' if is_state('input_boolean.ac_assumed_running', 'on') else 'idling in comfort range' }}
+                {% else %}Tap to start a session{% endif %}
+            icon: mdi:air-conditioner
+            color: "{{ ('blue' if is_state('input_select.ac_mode', 'cool') else 'deep-orange') if is_state('switch.aircon', 'on') else 'disabled' }}"
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full
+                rows: 2
+          - type: tile
+            entity: input_select.ac_mode
+            name: Mode
+            features_position: bottom
+            features:
+                - type: select-options
+            grid_options:
+                columns: full
+          - type: tile
+            entity: input_number.ac_comfort_temp_low
+            name: Comfort low
+            features_position: bottom
+            features:
+                - type: numeric-input
+                  style: buttons
+          - type: tile
+            entity: input_number.ac_comfort_temp_high
+            name: Comfort high
+            features_position: bottom
+            features:
+                - type: numeric-input
+                  style: buttons
+          - type: tile
+            entity: button.ac_toggle_fingerbot
+            name: Press fingerbot
+            icon: mdi:gesture-tap-button
+            tap_action:
+                action: perform-action
+                perform_action: button.press
+                target:
+                    entity_id: button.ac_toggle_fingerbot
+                confirmation:
+                    text: >-
+                        This physically presses the AC button without updating the monitor.
+                        Use the Aircon card above unless the two are out of sync.
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Inside
+            icon: mdi:home-thermometer
+          - type: tile
+            entity: sensor.temp_and_humidity_sensor_temperature
+            name: Temperature
+            color: red
+            features_position: bottom
+            features:
+                - type: trend-graph
+                  hours_to_show: 24
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.temp_and_humidity_sensor_humidity
+            name: Humidity
+            color: cyan
+            features_position: bottom
+            features:
+                - type: trend-graph
+                  hours_to_show: 24
+            grid_options:
+                columns: full
+          - type: tile
+            entity: sensor.bathroom_motion_sensor_temperature
+            name: Bathroom
+          - type: tile
+            entity: sensor.ensuite_motion_sensor_temperature
+            name: Ensuite
+          - type: tile
+            entity: sensor.ac_runtime_today
+            name: Runtime today
+            icon: mdi:timer-outline
+          - type: tile
+            entity: sensor.ac_activations_today
+            name: Starts today
+            icon: mdi:counter
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Monitor settings
+            icon: mdi:shield-check
+          - type: entities
+            show_header_toggle: false
+            entities:
+                - entity: input_boolean.ac_monitor_armed
+                  name: Monitor armed
+                - entity: input_boolean.ac_assumed_running
+                  name: Assumed running
+                - entity: input_number.ac_max_runtime_hours
+                  name: Max runtime
+                - entity: input_datetime.ac_quiet_hours_start
+                  name: Quiet hours start
+
+    - type: grid
+      column_span: 3
+      cards:
+          - type: custom:apexcharts-card
+            header:
+                show: true
+                title: AC runtime vs temperature (24h)
+            graph_span: 24h
+            apex_config:
+                chart:
+                    height: 320
+            yaxis:
+                - id: temp
+                  decimals: 1
+                - id: state
+                  opposite: true
+                  min: 0
+                  max: 1
+                  decimals: 0
+                  show: false
+            series:
+                - entity: sensor.temp_and_humidity_sensor_temperature
+                  name: Temperature
+                  yaxis_id: temp
+                  stroke_width: 2
+                  color: "#ef4444"
+                - entity: input_number.ac_comfort_temp_low
+                  name: Comfort low
+                  yaxis_id: temp
+                  curve: stepline
+                  stroke_width: 1
+                  color: "#64748b"
+                - entity: input_number.ac_comfort_temp_high
+                  name: Comfort high
+                  yaxis_id: temp
+                  curve: stepline
+                  stroke_width: 1
+                  color: "#64748b"
+                - entity: input_boolean.ac_assumed_running
+                  name: AC running
+                  yaxis_id: state
+                  type: area
+                  curve: stepline
+                  stroke_width: 0
+                  opacity: 0.25
+                  color: "#3b82f6"
+                  transform: "return x === 'on' ? 1 : 0;"
+            grid_options:
+                columns: full

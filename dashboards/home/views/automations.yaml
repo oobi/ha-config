@@ -1,0 +1,249 @@
+# Every automation and script in one place, grouped by what it's for.
+# Each automation tile shows on/off + when it last fired; tap for details,
+# where you can also run it or open its trace.
+title: Automations
+path: automations
+icon: mdi:robot
+type: sections
+max_columns: 4
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: Wake-up alarm
+            icon: mdi:alarm
+          - type: tile
+            entity: input_boolean.bedroom_alarm_enabled
+            name: 7am alarm
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full
+          - type: custom:mushroom-chips-card
+            alignment: center
+            chips:
+                - type: template
+                  entity: input_boolean.bedroom_alarm_master_bedroom
+                  content: Master
+                  icon: "{{ 'mdi:speaker' if is_state(entity, 'on') else 'mdi:speaker-off' }}"
+                  icon_color: "{{ 'amber' if is_state(entity, 'on') else 'disabled' }}"
+                  tap_action:
+                      action: toggle
+                - type: template
+                  entity: input_boolean.bedroom_alarm_dexter
+                  content: Dexter
+                  icon: "{{ 'mdi:speaker' if is_state(entity, 'on') else 'mdi:speaker-off' }}"
+                  icon_color: "{{ 'amber' if is_state(entity, 'on') else 'disabled' }}"
+                  tap_action:
+                      action: toggle
+                - type: template
+                  entity: input_boolean.bedroom_alarm_loki
+                  content: Loki
+                  icon: "{{ 'mdi:speaker' if is_state(entity, 'on') else 'mdi:speaker-off' }}"
+                  icon_color: "{{ 'amber' if is_state(entity, 'on') else 'disabled' }}"
+                  tap_action:
+                      action: toggle
+            grid_options:
+                columns: full
+          - type: tile
+            entity: script.bedroom_alarm_start
+            name: Ring now
+            icon: mdi:alarm-bell
+            color: amber
+            tap_action:
+                action: perform-action
+                perform_action: script.bedroom_alarm_start
+                confirmation:
+                    text: Ring the alarm now in the selected rooms?
+          - type: tile
+            entity: script.bedroom_alarm_stop
+            name: Stop all
+            icon: mdi:alarm-off
+            color: red
+            tap_action:
+                action: perform-action
+                perform_action: script.bedroom_alarm_stop
+          - type: tile
+            entity: automation.bedroom_alarm_7am_soft_alarm
+            name: Schedule
+            state_content:
+                - state
+                - last_triggered
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Aircon monitor
+            icon: mdi:air-conditioner
+            tap_action:
+                action: navigate
+                navigation_path: /dashboard-home/climate
+          - type: tile
+            entity: automation.ac_temperature_monitor_enforce_comfort_range
+            name: Enforce comfort range
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.ac_temperature_monitor_assume_running_when_armed
+            name: Assume running when armed
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.ac_temperature_monitor_not_reaching_comfort_alert
+            name: Not reaching comfort alert
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.ac_temperature_monitor_max_runtime_safety_cutoff
+            name: Max runtime cutoff
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.ac_temperature_monitor_quiet_hours_auto_disarm
+            name: Quiet hours disarm
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.ac_temperature_monitor_turn_ac_off_when_disarmed
+            name: Turn off when disarmed
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Electricity
+            icon: mdi:flash
+            badges:
+                - type: entity
+                  entity: sensor.electricity_import_rate
+                  show_state: true
+                  show_icon: false
+          - type: tile
+            entity: automation.electricity_tariff_off_peak_start_11_00
+            name: Off-peak 11:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.electricity_tariff_shoulder_start_14_00
+            name: Shoulder 14:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.electricity_tariff_peak_start_16_00
+            name: Peak 16:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.electricity_tariff_shoulder_start_23_00
+            name: Shoulder 23:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.electricity_feed_in_rate_1_start_16_00
+            name: Feed-in rate 1 · 16:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.electricity_feed_in_rate_2_start_23_00
+            name: Feed-in rate 2 · 23:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.zerohero_capture_grid_reading_at_18_00
+            name: ZeroHero · capture 18:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.zerohero_evaluate_1_credit_at_21_00
+            name: ZeroHero · evaluate 21:00
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.zerohero_reset_credit_counter_monthly
+            name: ZeroHero · monthly reset
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+
+    - type: grid
+      cards:
+          - type: heading
+            heading: Plants & pool
+            icon: mdi:flower
+          - type: tile
+            entity: automation.plant_health_alert_lighting_summary_notifications
+            name: Plant alerts · morning check
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.plant_alerts_deactivate_auto_recovery
+            name: Plant alerts · auto recovery
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+          - type: tile
+            entity: script.force_check_plant_status
+            name: Check plants now
+            icon: mdi:magnify
+            tap_action:
+                action: perform-action
+                perform_action: script.force_check_plant_status
+            grid_options:
+                columns: full
+          - type: tile
+            entity: automation.pool_garden_lights_auto_off
+            name: Garden lights auto-off
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full
+
+    - type: grid
+      column_span: 4
+      cards:
+          - type: heading
+            heading: System
+            icon: mdi:cog
+            heading_style: subtitle
+          - type: tile
+            entity: sensor.backup_last_successful_automatic_backup
+            name: Last backup
+            grid_options:
+                columns: 4
+          - type: tile
+            entity: switch.zigbee2mqtt_bridge_permit_join
+            name: Zigbee pairing
+            grid_options:
+                columns: 4
+          - type: tile
+            entity: sensor.onhub_download_speed
+            name: Internet
+            grid_options:
+                columns: 4
+          - type: button
+            name: Edit automations
+            icon: mdi:pencil
+            show_state: false
+            tap_action:
+                action: navigate
+                navigation_path: /config/automation/dashboard
+            grid_options:
+                columns: 4
+                rows: 1

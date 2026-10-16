@@ -4,9 +4,9 @@
         "delay": 0,
         "reverse": "ON",
         "upper": 0,
-        "battery": 22,
+        "battery": 20,
         "touch": "ON",
-        "state": "ON",
+        "state": "OFF",
         "mode": "click",
         "program": {
             "0": 255,
@@ -18,8 +18,8 @@
     },
     "0xcc36bbfffe009be5": {
         "battery": 100,
-        "temperature": 24.9,
-        "humidity": 47.8,
+        "temperature": 19.3,
+        "humidity": 57.7,
         "comfort_temperature_min": 19,
         "comfort_temperature_max": 27,
         "comfort_humidity_min": 40,

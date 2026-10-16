@@ -1,0 +1,75 @@
+title: "Dining"
+path: dining
+icon: mdi:silverware-fork-knife
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Lights"
+            icon: mdi:lightbulb-group
+          - type: tile
+            entity: light.dining
+            name: All lights
+            features_position: bottom
+            features:
+                - type: light-brightness
+            grid_options:
+                columns: full
+          - type: tile
+            entity: light.hue_color_spot_16
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.hue_color_spot_17
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.hue_color_spot_18
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.hue_color_spot_19
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Scenes"
+            icon: mdi:palette
+          - type: custom:mushroom-chips-card
+            chips:
+                - type: entity
+                  entity: scene.dining_tropical_twilight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Tropical twilight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.dining_tropical_twilight}}
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Printer"
+            icon: mdi:gauge
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx_black_tk_5494ks
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx_cyan_tk_5494cs
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx_magenta_tk_5494ms
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx_yellow_tk_5494ys
+          - type: tile
+            entity: sensor.ecosys_ma2101cwfx_waste_toner_box

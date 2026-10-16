@@ -1,0 +1,249 @@
+title: Home
+path: home
+icon: mdi:home-variant
+type: sections
+max_columns: 4
+header:
+    layout: responsive
+    badges_position: bottom
+    badges_wrap: wrap
+    card:
+        type: markdown
+        text_only: true
+        content: >-
+            # {% set h = now().hour %}{{ 'Good morning' if h < 12 else 'Good afternoon' if h < 18 else 'Good evening' }}
+
+            {% set on = states.light | selectattr('state', 'eq', 'on')
+                | rejectattr('attributes.is_hue_group', 'eq', true)
+                | rejectattr('entity_id', 'search', 'browser_mod') | list | count %}
+            {{ 'All lights are off' if on == 0 else on ~ ' light' ~ ('s' if on > 1 else '') ~ ' on' }}
+            · Inside {{ states('sensor.temp_and_humidity_sensor_temperature') }}°
+            · {{ states('sensor.plant_problems') | int(0) }} plant{{ '' if states('sensor.plant_problems') | int(0) == 1 else 's' }} need care
+badges:
+    - type: entity
+      entity: weather.forecast_home
+      show_name: false
+      state_content: temperature
+    - type: custom:mushroom-template-badge
+      entity: switch.aircon
+      icon: mdi:air-conditioner
+      label: Aircon
+      content: >-
+          {{ ('On · ' ~ states('input_select.ac_mode') | title) if is_state('switch.aircon', 'on') else 'Off' }}
+      color: "{{ ('blue' if is_state('input_select.ac_mode', 'cool') else 'deep-orange') if is_state('switch.aircon', 'on') else 'disabled' }}"
+      tap_action:
+          action: navigate
+          navigation_path: /dashboard-home/climate
+    - type: custom:mushroom-template-badge
+      entity: input_boolean.bedroom_alarm_enabled
+      icon: "{{ 'mdi:alarm' if is_state('input_boolean.bedroom_alarm_enabled', 'on') else 'mdi:alarm-off' }}"
+      label: Wake-up
+      content: "{{ 'Ringing' if is_state('script.bedroom_alarm_ring', 'on') else '7:00' if is_state('input_boolean.bedroom_alarm_enabled', 'on') else 'Off' }}"
+      color: "{{ 'red' if is_state('script.bedroom_alarm_ring', 'on') else 'amber' if is_state('input_boolean.bedroom_alarm_enabled', 'on') else 'disabled' }}"
+      tap_action:
+          action: navigate
+          navigation_path: /dashboard-home/automations
+    - type: custom:mushroom-template-badge
+      entity: sensor.foxess_bat_soc1
+      icon: >-
+          {% set c = states('sensor.foxess_bat_charge_power') | float(0) %}
+          {{ 'mdi:battery-arrow-up' if c > 0 else 'mdi:battery-arrow-down' }}
+      label: Battery
+      content: "{{ states('sensor.foxess_bat_soc1') | int(0) }}%"
+      color: "{{ 'green' if states('sensor.foxess_bat_charge_power') | float(0) > 0 else 'orange' }}"
+      tap_action:
+          action: navigate
+          navigation_path: /dashboard-home/energy
+    - type: custom:mushroom-template-badge
+      entity: sensor.foxess_pv_power
+      icon: mdi:solar-power-variant
+      label: Solar
+      content: "{{ states('sensor.foxess_pv_power') | float(0) | round(1) }} kW"
+      color: "{{ 'amber' if states('sensor.foxess_pv_power') | float(0) > 0.05 else 'disabled' }}"
+      tap_action:
+          action: navigate
+          navigation_path: /dashboard-home/energy
+    - type: custom:mushroom-template-badge
+      entity: sensor.plant_problems
+      icon: mdi:flower
+      label: Plants
+      content: "{{ 'All good' if states('sensor.plant_problems') | int(0) == 0 else states('sensor.plant_problems') | int(0) ~ ' need care' }}"
+      color: "{{ 'red' if states('sensor.plant_problems') | int(0) > 0 else 'green' }}"
+      tap_action:
+          action: navigate
+          navigation_path: /dashboard-plants
+sections:
+    # --- the house ------------------------------------------------------------
+    - type: grid
+      column_span: 3
+      cards:
+          - type: heading
+            heading: Upper floor
+            icon: mdi:floor-plan
+            badges:
+                - type: entity
+                  entity: sensor.temp_and_humidity_sensor_temperature
+                  show_state: true
+                  show_icon: true
+                - type: entity
+                  entity: sensor.temp_and_humidity_sensor_humidity
+                  show_state: true
+                  show_icon: true
+          - type: picture-elements
+            image: /local/floorplan/upper.svg?v=1
+            grid_options:
+                columns: full
+            elements: !include ../floorplan/upper_elements.yaml
+          - type: markdown
+            text_only: true
+            content: >-
+                <ha-icon icon="mdi:gesture-tap"></ha-icon> Tap a room to open it,
+                hold to toggle its lights · tap an icon to control that device
+
+    # --- quick actions ----------------------------------------------------------
+    - type: grid
+      cards:
+          - type: heading
+            heading: Quick actions
+            icon: mdi:lightning-bolt
+          - type: custom:mushroom-template-card
+            entity: switch.aircon
+            primary: Aircon
+            secondary: >-
+                {% if is_state('switch.aircon', 'on') %}{{ states('input_select.ac_mode') | title }}
+                · {{ states('input_number.ac_comfort_temp_low') | float | round(1) }}–{{ states('input_number.ac_comfort_temp_high') | float | round(1) }}°
+                {% else %}Off · {{ states('sensor.temp_and_humidity_sensor_temperature') }}° inside{% endif %}
+            icon: mdi:air-conditioner
+            color: "{{ ('blue' if is_state('input_select.ac_mode', 'cool') else 'deep-orange') if is_state('switch.aircon', 'on') else 'disabled' }}"
+            tap_action:
+                action: toggle
+            hold_action:
+                action: navigate
+                navigation_path: /dashboard-home/climate
+            grid_options:
+                columns: full
+          - type: custom:mushroom-template-card
+            entity: input_boolean.bedroom_alarm_enabled
+            primary: Wake-up alarm
+            secondary: >-
+                {% if is_state('script.bedroom_alarm_ring', 'on') %}Ringing now
+                {%- elif is_state('input_boolean.bedroom_alarm_enabled', 'on') %}
+                {%- set rooms = [('input_boolean.bedroom_alarm_master_bedroom', 'Master'), ('input_boolean.bedroom_alarm_dexter', 'Dexter'), ('input_boolean.bedroom_alarm_loki', 'Loki')]
+                    | selectattr(0, 'is_state', 'on') | map(attribute=1) | list %}7:00 · {{ rooms | join(', ') if rooms else 'no rooms picked' }}
+                {%- else %}Off{% endif %}
+            icon: "{{ 'mdi:alarm' if is_state('input_boolean.bedroom_alarm_enabled', 'on') else 'mdi:alarm-off' }}"
+            color: "{{ 'red' if is_state('script.bedroom_alarm_ring', 'on') else 'amber' if is_state('input_boolean.bedroom_alarm_enabled', 'on') else 'disabled' }}"
+            tap_action:
+                action: toggle
+            hold_action:
+                action: navigate
+                navigation_path: /dashboard-home/automations
+            grid_options:
+                columns: full
+          - type: tile
+            entity: cover.all_blinds
+            name: Lounge blinds
+            features_position: inline
+            features:
+                - type: cover-open-close
+            grid_options:
+                columns: full
+          - type: tile
+            entity: vacuum.saros_10r
+            name: Saros vacuum
+            features_position: inline
+            features:
+                - type: vacuum-commands
+                  commands:
+                      - start_pause
+                      - return_home
+            grid_options:
+                columns: full
+          - type: custom:mushroom-template-card
+            primary: All lights off
+            secondary: Every room, inside and out
+            icon: mdi:lightbulb-group-off
+            color: indigo
+            tap_action:
+                action: perform-action
+                perform_action: light.turn_off
+                target:
+                    entity_id:
+                        - light.living_room
+                        - light.dining
+                        - light.hallway
+                        - light.upstairs
+                        - light.master_bedroom
+                        - light.lokis_bedroom
+                        - light.enders_bedroom
+                        - light.bathroom
+                        - light.ensuite
+                        - light.deck
+                confirmation:
+                    text: Turn off every light in the house?
+            grid_options:
+                columns: full
+
+    # --- outside ----------------------------------------------------------------
+    - type: grid
+      cards:
+          - type: heading
+            heading: Outside
+            icon: mdi:pool
+            badges:
+                - type: entity
+                  entity: sensor.smart_plug_v2_f278f3_power
+                  show_state: true
+                  show_icon: true
+          - type: picture-elements
+            image: /local/floorplan/outside.svg?v=1
+            grid_options:
+                columns: full
+            elements: !include ../floorplan/outside_elements.yaml
+
+    # --- energy now ---------------------------------------------------------------
+    - type: grid
+      column_span: 3
+      cards:
+          - type: heading
+            heading: Energy right now
+            icon: mdi:flash
+            tap_action:
+                action: navigate
+                navigation_path: /dashboard-home/energy
+            badges:
+                - type: entity
+                  entity: sensor.electricity_import_rate
+                  show_state: true
+                  show_icon: true
+                - type: entity
+                  entity: sensor.electricity_cost_today
+                  show_state: true
+                  show_icon: true
+          - type: tile
+            entity: sensor.foxess_pv_power
+            name: Solar
+            icon: mdi:solar-power-variant
+            color: amber
+            grid_options:
+                columns: 3
+          - type: tile
+            entity: sensor.foxess_load_power
+            name: House
+            icon: mdi:home-lightning-bolt
+            color: blue
+            grid_options:
+                columns: 3
+          - type: tile
+            entity: sensor.foxess_bat_soc1
+            name: Battery
+            color: green
+            grid_options:
+                columns: 3
+          - type: tile
+            entity: sensor.foxess_grid_consumption_power
+            name: From grid
+            icon: mdi:transmission-tower-import
+            color: red
+            grid_options:
+                columns: 3

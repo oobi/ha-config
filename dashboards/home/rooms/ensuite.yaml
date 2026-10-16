@@ -1,0 +1,138 @@
+title: "Ensuite"
+path: ensuite
+icon: mdi:toilet
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Lights"
+            icon: mdi:lightbulb-group
+            badges:
+                - type: entity
+                  entity: sensor.ensuite_motion_sensor_temperature
+                  show_state: true
+                  show_icon: true
+                - type: entity
+                  entity: binary_sensor.ensuite_motion_sensor_motion
+                  show_state: true
+                  show_icon: true
+          - type: tile
+            entity: light.ensuite
+            name: All lights
+            features_position: bottom
+            features:
+                - type: light-brightness
+            grid_options:
+                columns: full
+          - type: tile
+            entity: light.ensuite_1
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.ensuite_2
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Scenes"
+            icon: mdi:palette
+          - type: custom:mushroom-chips-card
+            chips:
+                - type: entity
+                  entity: scene.ensuite_bright
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Bright"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_bright}}
+                - type: entity
+                  entity: scene.ensuite_relax
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Relax"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_relax}}
+                - type: entity
+                  entity: scene.ensuite_read
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Read"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_read}}
+                - type: entity
+                  entity: scene.ensuite_concentrate
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Concentrate"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_concentrate}}
+                - type: entity
+                  entity: scene.ensuite_dimmed
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Dimmed"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_dimmed}}
+                - type: entity
+                  entity: scene.ensuite_nightlight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Nightlight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_nightlight}}
+                - type: entity
+                  entity: scene.ensuite_energize
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Energize"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_energize}}
+                - type: entity
+                  entity: scene.ensuite_up_late
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Up late"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_up_late}}
+                - type: entity
+                  entity: scene.ensuite_savanna_sunset
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Savanna sunset"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_savanna_sunset}}
+                - type: entity
+                  entity: scene.ensuite_tropical_twilight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Tropical twilight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_tropical_twilight}}
+                - type: entity
+                  entity: scene.ensuite_arctic_aurora
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Arctic aurora"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_arctic_aurora}}
+                - type: entity
+                  entity: scene.ensuite_spring_blossom
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Spring blossom"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_spring_blossom}}
+                - type: entity
+                  entity: scene.ensuite_painted_sky
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Painted sky"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.ensuite_painted_sky}}
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Devices"
+            icon: mdi:devices
+          - type: tile
+            entity: switch.sonoff_1000eca0b7
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full

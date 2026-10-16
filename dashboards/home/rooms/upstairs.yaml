@@ -1,0 +1,64 @@
+title: "Upstairs (all)"
+path: upstairs
+icon: mdi:stairs
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Lights"
+            icon: mdi:lightbulb-group
+          - type: tile
+            entity: light.upstairs
+            name: All lights
+            features_position: bottom
+            features:
+                - type: light-brightness
+            grid_options:
+                columns: full
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Scenes"
+            icon: mdi:palette
+          - type: custom:mushroom-chips-card
+            chips:
+                - type: entity
+                  entity: scene.upstairs_bright
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Bright"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_bright}}
+                - type: entity
+                  entity: scene.upstairs_relax
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Relax"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_relax}}
+                - type: entity
+                  entity: scene.upstairs_dreamy_dusk
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Dreamy dusk"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_dreamy_dusk}}
+                - type: entity
+                  entity: scene.upstairs_golden_pond
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Golden pond"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_golden_pond}}
+                - type: entity
+                  entity: scene.upstairs_painted_sky
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Painted sky"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_painted_sky}}
+                - type: entity
+                  entity: scene.upstairs_spellbound
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Spellbound"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.upstairs_spellbound}}

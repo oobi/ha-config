@@ -1,0 +1,262 @@
+title: "Living Room"
+path: living-room
+icon: mdi:sofa
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Lights"
+            icon: mdi:lightbulb-group
+          - type: tile
+            entity: light.living_room
+            name: All lights
+            features_position: bottom
+            features:
+                - type: light-brightness
+            grid_options:
+                columns: full
+          - type: tile
+            entity: light.lounge_1
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.lounge_2
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.lounge_3
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.lounge_4
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.lounge_5
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.lounge_6
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Scenes"
+            icon: mdi:palette
+          - type: custom:mushroom-chips-card
+            chips:
+                - type: entity
+                  entity: scene.living_room_bright
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Bright"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_bright}}
+                - type: entity
+                  entity: scene.living_room_relax
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Relax"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_relax}}
+                - type: entity
+                  entity: scene.living_room_read
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Read"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_read}}
+                - type: entity
+                  entity: scene.living_room_concentrate
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Concentrate"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_concentrate}}
+                - type: entity
+                  entity: scene.living_room_dimmed
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Dimmed"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_dimmed}}
+                - type: entity
+                  entity: scene.living_room_nightlight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Nightlight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_nightlight}}
+                - type: entity
+                  entity: scene.living_room_energize
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Energize"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_energize}}
+                - type: entity
+                  entity: scene.living_room_savanna_sunset
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Savanna sunset"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_savanna_sunset}}
+                - type: entity
+                  entity: scene.living_room_tropical_twilight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Tropical twilight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_tropical_twilight}}
+                - type: entity
+                  entity: scene.living_room_arctic_aurora
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Arctic aurora"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_arctic_aurora}}
+                - type: entity
+                  entity: scene.living_room_spring_blossom
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Spring blossom"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_spring_blossom}}
+                - type: entity
+                  entity: scene.living_room_painted_sky
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Painted sky"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_painted_sky}}
+                - type: entity
+                  entity: scene.living_room_galaxy
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Galaxy"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_galaxy}}
+                - type: entity
+                  entity: scene.living_room_blood_moon
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Blood moon"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_blood_moon}}
+                - type: entity
+                  entity: scene.living_room_loki
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Loki"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_loki}}
+                - type: entity
+                  entity: scene.living_room_ender
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Ender"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.living_room_ender}}
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Devices"
+            icon: mdi:devices
+          - type: tile
+            entity: cover.all_blinds
+            name: All blinds
+            features_position: bottom
+            features:
+                - type: cover-open-close
+            grid_options:
+                columns: full
+          - type: tile
+            entity: cover.blind_1
+            features_position: bottom
+            features:
+                - type: cover-open-close
+          - type: tile
+            entity: cover.blind_2
+            features_position: bottom
+            features:
+                - type: cover-open-close
+          - type: tile
+            entity: cover.blind_3
+            features_position: bottom
+            features:
+                - type: cover-open-close
+          - type: tile
+            entity: cover.blind_4
+            features_position: bottom
+            features:
+                - type: cover-open-close
+          - type: tile
+            entity: vacuum.roborock_s5_max
+            features_position: bottom
+            features:
+                - type: vacuum-commands
+                  commands:
+                      - start_pause
+                      - stop
+                      - return_home
+                      - locate
+            grid_options:
+                columns: full
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Media"
+            icon: mdi:speaker
+          - type: custom:mushroom-media-player-card
+            entity: media_player.lg_webos_tv_1118
+            use_media_info: true
+            show_volume_level: true
+            media_controls:
+                - play_pause_on
+                - previous
+                - next
+            volume_controls:
+                - volume_set
+                - volume_mute
+            grid_options:
+                columns: full
+          - type: custom:mushroom-media-player-card
+            entity: media_player.living_room
+            use_media_info: true
+            show_volume_level: true
+            media_controls:
+                - play_pause_on
+                - previous
+                - next
+            volume_controls:
+                - volume_set
+                - volume_mute
+            grid_options:
+                columns: full
+          - type: custom:mushroom-media-player-card
+            entity: media_player.living_room_upstairs
+            use_media_info: true
+            show_volume_level: true
+            media_controls:
+                - play_pause_on
+                - previous
+                - next
+            volume_controls:
+                - volume_set
+                - volume_mute
+            grid_options:
+                columns: full
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Plants"
+            icon: mdi:flower
+          - type: tile
+            entity: plant.plant_1
+          - type: tile
+            entity: plant.plant_2
+          - type: tile
+            entity: plant.plant_3
+          - type: tile
+            entity: plant.plant_4

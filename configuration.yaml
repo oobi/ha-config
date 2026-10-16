@@ -101,6 +101,14 @@ lovelace:
     resources:
         - url: /local/custom_cards/solar_control/solar-control-card.js?v=1.1
           type: module
+    dashboards:
+        # Floorplan-based home dashboard (see dashboards/home/dashboard.yaml)
+        dashboard-home:
+            mode: yaml
+            title: Home
+            icon: mdi:home-variant
+            show_in_sidebar: true
+            filename: dashboards/home/dashboard.yaml
 
 logger:
     default: warning

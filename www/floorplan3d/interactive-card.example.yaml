@@ -1,0 +1,21 @@
+# Add this resource via Settings → Dashboards → Resources (advanced mode).
+# URL: /local/floorplan3d/floorplan-card.js?v=5
+# Type: JavaScript module
+#
+# Then paste the following into a Manual card on a NEW dashboard/view.
+# A wide card works best (full-width section or a panel view).
+type: custom:floorplan-3d-card
+show_colours: true
+# Small room markers; names appear on hover or keyboard focus.
+show_labels: true
+
+# Optional per-room overrides. The default IDs were copied from the existing
+# dashboards/home/rooms YAML, including their historical bedroom entity names.
+# lights/covers: first entity = whole-room group, then individual devices.
+# For a room with one light, use a list containing that single entity.
+# media/scenes: each entity gets its own native control.
+# rooms:
+#   kitchen:
+#     lights: [light.your_kitchen_group, light.your_kitchen_bulb]
+#   living_room:
+#     media: [media_player.lg_webos_tv_1118]

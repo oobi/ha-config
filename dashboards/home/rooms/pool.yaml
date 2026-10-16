@@ -1,0 +1,50 @@
+title: "Pool & Garden"
+path: pool
+icon: mdi:pool
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Devices"
+            icon: mdi:devices
+          - type: tile
+            entity: switch.sonoff_1000b89874
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full
+          - type: tile
+            entity: switch.sonoff_1000b89a37
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full
+          - type: tile
+            entity: switch.smart_plug_v2_f278f3_switch
+            tap_action:
+                action: toggle
+            grid_options:
+                columns: full
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Pump plug"
+            icon: mdi:gauge
+          - type: tile
+            entity: sensor.smart_plug_v2_f278f3_power
+          - type: tile
+            entity: sensor.smart_plug_v2_f278f3_energy
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Automations"
+            icon: mdi:robot
+          - type: tile
+            entity: automation.pool_garden_lights_auto_off
+            state_content: [state, last_triggered]
+            grid_options:
+                columns: full

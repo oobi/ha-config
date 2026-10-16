@@ -1,0 +1,100 @@
+title: "Front Deck"
+path: deck
+icon: mdi:deck
+subview: true
+back_path: /dashboard-home/home
+type: sections
+max_columns: 3
+sections:
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Lights"
+            icon: mdi:lightbulb-group
+          - type: tile
+            entity: light.deck
+            name: All lights
+            features_position: bottom
+            features:
+                - type: light-brightness
+            grid_options:
+                columns: full
+          - type: tile
+            entity: light.deck_1
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.deck_2
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.deck_3
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.deck_4
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+          - type: tile
+            entity: light.deck_5
+            tap_action:
+                action: toggle
+            hold_action:
+                action: more-info
+    - type: grid
+      cards:
+          - type: heading
+            heading: "Scenes"
+            icon: mdi:palette
+          - type: custom:mushroom-chips-card
+            chips:
+                - type: entity
+                  entity: scene.deck_relax
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Relax"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_relax}}
+                - type: entity
+                  entity: scene.deck_rest
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Rest"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_rest}}
+                - type: entity
+                  entity: scene.deck_read
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Read"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_read}}
+                - type: entity
+                  entity: scene.deck_concentrate
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Concentrate"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_concentrate}}
+                - type: entity
+                  entity: scene.deck_energise
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Energise"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_energise}}
+                - type: entity
+                  entity: scene.deck_natural_light
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Natural light"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_natural_light}}
+                - type: entity
+                  entity: scene.deck_nightlight
+                  icon: mdi:palette
+                  content_info: name
+                  name: "Nightlight"
+                  tap_action: {action: perform-action, perform_action: scene.turn_on, target: {entity_id: scene.deck_nightlight}}

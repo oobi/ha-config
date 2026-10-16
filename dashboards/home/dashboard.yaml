@@ -1,0 +1,29 @@
+# Home dashboard (YAML mode, registered in configuration.yaml as /dashboard-home)
+#
+# Layout:
+#   Home        - overview: header badges, quick actions, room cards, energy now
+#   Climate     - aircon + temperature monitor
+#   Energy      - solar / battery / grid
+#   Automations - every automation and script, grouped by what it does
+#   <room>      - one hidden subview per room, opened by tapping a room card
+#
+# Edits to these files show up on a browser refresh; no restart needed.
+title: Home
+views:
+    - !include views/home.yaml
+    - !include views/climate.yaml
+    - !include views/energy.yaml
+    - !include views/automations.yaml
+    # Room subviews (not shown as tabs)
+    - !include rooms/living_room.yaml
+    - !include rooms/dining.yaml
+    - !include rooms/kitchen.yaml
+    - !include rooms/hallway.yaml
+    - !include rooms/upstairs.yaml
+    - !include rooms/master_bedroom.yaml
+    - !include rooms/dexters_bedroom.yaml
+    - !include rooms/lokis_bedroom.yaml
+    - !include rooms/bathroom.yaml
+    - !include rooms/ensuite.yaml
+    - !include rooms/deck.yaml
+    - !include rooms/pool.yaml

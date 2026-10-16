@@ -1,0 +1,1220 @@
+{
+  "name": "Upper floor",
+  "source": "User-supplied upper-floor reference image, traced approximately in its 930 x 958 pixel coordinate system.",
+  "scale_note": "52 reference pixels per model metre. Door/window locations and wall offsets follow the reference image; dimensions, sill heights, frame styles and finishes are approximate.",
+  "wall_height": 2.6,
+  "cutaway_height": 0.85,
+  "rooms": [
+    {
+      "id": "hallway",
+      "label": "Hall",
+      "source_dimension": null,
+      "polygon": [
+        [
+          241,
+          405
+        ],
+        [
+          573,
+          405
+        ],
+        [
+          573,
+          459
+        ],
+        [
+          518,
+          459
+        ],
+        [
+          518,
+          662
+        ],
+        [
+          442,
+          662
+        ],
+        [
+          442,
+          459
+        ],
+        [
+          241,
+          459
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        390,
+        435
+      ],
+      "entity": "light.hallway",
+      "route": "hallway"
+    },
+    {
+      "id": "deck",
+      "label": "Front Deck",
+      "source_dimension": null,
+      "polygon": [
+        [
+          46,
+          662
+        ],
+        [
+          893,
+          662
+        ],
+        [
+          893,
+          893
+        ],
+        [
+          658,
+          893
+        ],
+        [
+          658,
+          746
+        ],
+        [
+          46,
+          746
+        ]
+      ],
+      "material": "deck",
+      "label_anchor": [
+        780,
+        795
+      ],
+      "entity": "light.deck",
+      "route": "deck"
+    },
+    {
+      "id": "master_bedroom",
+      "label": "Master bedroom",
+      "source_dimension": "3.4 × 4.3m",
+      "polygon": [
+        [
+          52,
+          227
+        ],
+        [
+          223,
+          227
+        ],
+        [
+          223,
+          405
+        ],
+        [
+          241,
+          405
+        ],
+        [
+          241,
+          459
+        ],
+        [
+          52,
+          459
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        143,
+        352
+      ],
+      "entity": "light.master_bedroom",
+      "route": "master-bedroom"
+    },
+    {
+      "id": "ensuite",
+      "label": "Ensuite",
+      "source_dimension": null,
+      "polygon": [
+        [
+          269,
+          227
+        ],
+        [
+          341,
+          227
+        ],
+        [
+          341,
+          374
+        ],
+        [
+          269,
+          374
+        ],
+        [
+          269,
+          327
+        ],
+        [
+          223,
+          327
+        ],
+        [
+          223,
+          279
+        ],
+        [
+          269,
+          279
+        ]
+      ],
+      "material": "tile",
+      "label_anchor": [
+        300,
+        301
+      ],
+      "entity": "light.ensuite",
+      "route": "ensuite"
+    },
+    {
+      "id": "bathroom",
+      "label": "Bathroom",
+      "source_dimension": null,
+      "polygon": [
+        [
+          341,
+          227
+        ],
+        [
+          460,
+          227
+        ],
+        [
+          460,
+          405
+        ],
+        [
+          341,
+          405
+        ]
+      ],
+      "material": "tile",
+      "label_anchor": [
+        401,
+        331
+      ],
+      "entity": "light.bathroom",
+      "route": "bathroom"
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "source_dimension": "4.7 × 4.3m",
+      "polygon": [
+        [
+          460,
+          227
+        ],
+        [
+          710,
+          227
+        ],
+        [
+          710,
+          459
+        ],
+        [
+          573,
+          459
+        ],
+        [
+          573,
+          405
+        ],
+        [
+          460,
+          405
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        590,
+        335
+      ],
+      "entity": null,
+      "route": "kitchen"
+    },
+    {
+      "id": "dining",
+      "label": "Dining",
+      "source_dimension": "3.1 × 4.3m",
+      "polygon": [
+        [
+          710,
+          227
+        ],
+        [
+          885,
+          227
+        ],
+        [
+          885,
+          459
+        ],
+        [
+          710,
+          459
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        800,
+        350
+      ],
+      "entity": "light.dining",
+      "route": "dining"
+    },
+    {
+      "id": "dexters_bedroom",
+      "label": "Dexter’s room",
+      "source_dimension": "4.2 × 3.7m",
+      "polygon": [
+        [
+          52,
+          459
+        ],
+        [
+          284,
+          459
+        ],
+        [
+          284,
+          589
+        ],
+        [
+          237,
+          589
+        ],
+        [
+          237,
+          662
+        ],
+        [
+          52,
+          662
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        145,
+        558
+      ],
+      "entity": "light.lokis_bedroom",
+      "route": "dexters-bedroom"
+    },
+    {
+      "id": "lokis_bedroom",
+      "label": "Loki’s room",
+      "source_dimension": "2.9 × 3.7m",
+      "polygon": [
+        [
+          284,
+          459
+        ],
+        [
+          442,
+          459
+        ],
+        [
+          442,
+          662
+        ],
+        [
+          237,
+          662
+        ],
+        [
+          237,
+          589
+        ],
+        [
+          284,
+          589
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        363,
+        564
+      ],
+      "entity": "light.enders_bedroom",
+      "route": "lokis-bedroom"
+    },
+    {
+      "id": "living_room",
+      "label": "Living room",
+      "source_dimension": "6.7 × 3.7m",
+      "polygon": [
+        [
+          518,
+          459
+        ],
+        [
+          885,
+          459
+        ],
+        [
+          885,
+          662
+        ],
+        [
+          518,
+          662
+        ]
+      ],
+      "material": "oak",
+      "label_anchor": [
+        702,
+        560
+      ],
+      "entity": "light.living_room",
+      "route": "living-room"
+    }
+  ],
+  "balcony": [
+    [
+      46,
+      164
+    ],
+    [
+      596,
+      164
+    ],
+    [
+      596,
+      139
+    ],
+    [
+      674,
+      139
+    ],
+    [
+      674,
+      63
+    ],
+    [
+      893,
+      63
+    ],
+    [
+      893,
+      227
+    ],
+    [
+      46,
+      227
+    ]
+  ],
+  "furniture": [],
+  "original_source": "../floorplan/upper.svg",
+  "coordinate_system": {
+    "origin": [
+      468.5,
+      444.5
+    ],
+    "units_per_metre": 52,
+    "reference_image_size": [
+      930,
+      958
+    ]
+  },
+  "footprint": [
+    [
+      46,
+      227
+    ],
+    [
+      893,
+      227
+    ],
+    [
+      893,
+      662
+    ],
+    [
+      46,
+      662
+    ]
+  ],
+  "balcony_label_anchor": [
+    794,
+    149
+  ],
+  "stairs": {
+    "polygon": [
+      [
+        451,
+        469
+      ],
+      [
+        508,
+        469
+      ],
+      [
+        508,
+        564
+      ],
+      [
+        451,
+        564
+      ]
+    ],
+    "count": 8,
+    "label": "Schematic stair flight; direction follows the reference arrow, exact rise unknown."
+  },
+  "builtins": [
+    {
+      "id": "master_robe_upper",
+      "polygon": [
+        [
+          223,
+          227
+        ],
+        [
+          269,
+          227
+        ],
+        [
+          269,
+          279
+        ],
+        [
+          223,
+          279
+        ]
+      ]
+    },
+    {
+      "id": "master_robe_lower",
+      "polygon": [
+        [
+          223,
+          327
+        ],
+        [
+          269,
+          327
+        ],
+        [
+          269,
+          405
+        ],
+        [
+          223,
+          405
+        ]
+      ]
+    },
+    {
+      "id": "linen",
+      "polygon": [
+        [
+          269,
+          374
+        ],
+        [
+          341,
+          374
+        ],
+        [
+          341,
+          405
+        ],
+        [
+          269,
+          405
+        ]
+      ]
+    }
+  ],
+  "walls": [
+    {
+      "id": "rear",
+      "start": [
+        52,
+        227
+      ],
+      "end": [
+        885,
+        227
+      ],
+      "display_height_m": 2.25,
+      "thickness_m": 0.18
+    },
+    {
+      "id": "front",
+      "start": [
+        52,
+        662
+      ],
+      "end": [
+        885,
+        662
+      ],
+      "display_height_m": 1.05,
+      "thickness_m": 0.18
+    },
+    {
+      "id": "left",
+      "start": [
+        52,
+        227
+      ],
+      "end": [
+        52,
+        662
+      ],
+      "display_height_m": 1.35,
+      "thickness_m": 0.18
+    },
+    {
+      "id": "right",
+      "start": [
+        885,
+        227
+      ],
+      "end": [
+        885,
+        662
+      ],
+      "display_height_m": 1.3,
+      "thickness_m": 0.18
+    },
+    {
+      "id": "room_row",
+      "start": [
+        52,
+        459
+      ],
+      "end": [
+        885,
+        459
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "stair_left",
+      "start": [
+        442,
+        459
+      ],
+      "end": [
+        442,
+        662
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "stair_right",
+      "start": [
+        518,
+        459
+      ],
+      "end": [
+        518,
+        662
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "bed_divider_upper",
+      "start": [
+        284,
+        459
+      ],
+      "end": [
+        284,
+        589
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.14
+    },
+    {
+      "id": "bed_divider_lower",
+      "start": [
+        237,
+        589
+      ],
+      "end": [
+        237,
+        662
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.14
+    },
+    {
+      "id": "bed2_robe_top",
+      "start": [
+        237,
+        514
+      ],
+      "end": [
+        284,
+        514
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "bed_robe_divider",
+      "start": [
+        237,
+        589
+      ],
+      "end": [
+        284,
+        589
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "bed2_robe_front",
+      "start": [
+        237,
+        514
+      ],
+      "end": [
+        237,
+        589
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.1
+    },
+    {
+      "id": "bed3_robe_front",
+      "start": [
+        284,
+        589
+      ],
+      "end": [
+        284,
+        662
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.1
+    },
+    {
+      "id": "master_right",
+      "start": [
+        223,
+        227
+      ],
+      "end": [
+        223,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "master_upper_robe_back",
+      "start": [
+        269,
+        227
+      ],
+      "end": [
+        269,
+        279
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "master_upper_robe_base",
+      "start": [
+        223,
+        279
+      ],
+      "end": [
+        269,
+        279
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "master_lower_robe_top",
+      "start": [
+        223,
+        327
+      ],
+      "end": [
+        269,
+        327
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "master_lower_robe_back",
+      "start": [
+        269,
+        327
+      ],
+      "end": [
+        269,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "ensuite_bath",
+      "start": [
+        341,
+        227
+      ],
+      "end": [
+        341,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.14
+    },
+    {
+      "id": "ensuite_linen",
+      "start": [
+        269,
+        374
+      ],
+      "end": [
+        341,
+        374
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "bath_hall",
+      "start": [
+        223,
+        405
+      ],
+      "end": [
+        460,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.14
+    },
+    {
+      "id": "master_hall",
+      "start": [
+        241,
+        405
+      ],
+      "end": [
+        241,
+        459
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.12
+    },
+    {
+      "id": "bath_kitchen",
+      "start": [
+        460,
+        227
+      ],
+      "end": [
+        460,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "kitchen_hall",
+      "start": [
+        460,
+        405
+      ],
+      "end": [
+        573,
+        405
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "kitchen_corner",
+      "start": [
+        573,
+        405
+      ],
+      "end": [
+        573,
+        459
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    },
+    {
+      "id": "kitchen_dining",
+      "start": [
+        710,
+        227
+      ],
+      "end": [
+        710,
+        459
+      ],
+      "display_height_m": 0.85,
+      "thickness_m": 0.17
+    }
+  ],
+  "openings": [
+    {
+      "id": "master_rear_window",
+      "wall": "rear",
+      "kind": "window",
+      "start": 76,
+      "end": 154,
+      "sill_m": 0.65,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "master_balcony_door",
+      "wall": "rear",
+      "kind": "hinged_door",
+      "start": 170,
+      "end": 208,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        208,
+        227
+      ],
+      "leaf_tip": [
+        208,
+        263
+      ]
+    },
+    {
+      "id": "ensuite_rear_window",
+      "wall": "rear",
+      "kind": "window",
+      "start": 277,
+      "end": 331,
+      "sill_m": 0.95,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 1
+    },
+    {
+      "id": "bath_rear_window",
+      "wall": "rear",
+      "kind": "window",
+      "start": 365,
+      "end": 432,
+      "sill_m": 0.95,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "kitchen_balcony_door",
+      "wall": "rear",
+      "kind": "hinged_door",
+      "start": 470,
+      "end": 505,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        470,
+        227
+      ],
+      "leaf_tip": [
+        470,
+        260
+      ]
+    },
+    {
+      "id": "kitchen_rear_window",
+      "wall": "rear",
+      "kind": "window",
+      "start": 553,
+      "end": 673,
+      "sill_m": 0.65,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 3
+    },
+    {
+      "id": "dining_balcony_slider",
+      "wall": "rear",
+      "kind": "sliding_glass",
+      "start": 736,
+      "end": 856,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2,
+      "open_panel": 0
+    },
+    {
+      "id": "bed2_front_slider",
+      "wall": "front",
+      "kind": "sliding_glass",
+      "start": 76,
+      "end": 176,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2,
+      "open_panel": 1
+    },
+    {
+      "id": "bed3_front_window",
+      "wall": "front",
+      "kind": "window",
+      "start": 311,
+      "end": 405,
+      "sill_m": 0.65,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "lounge_front_slider",
+      "wall": "front",
+      "kind": "sliding_glass",
+      "start": 604,
+      "end": 835,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 3,
+      "open_panel": 1
+    },
+    {
+      "id": "lounge_side_window",
+      "wall": "right",
+      "kind": "window",
+      "start": 503,
+      "end": 585,
+      "sill_m": 0.65,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "bed2_hall_door",
+      "wall": "room_row",
+      "kind": "hinged_door",
+      "start": 246,
+      "end": 278,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        278,
+        459
+      ],
+      "leaf_tip": [
+        278,
+        489
+      ]
+    },
+    {
+      "id": "bed3_hall_door",
+      "wall": "room_row",
+      "kind": "hinged_door",
+      "start": 295,
+      "end": 332,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        295,
+        459
+      ],
+      "leaf_tip": [
+        295,
+        494
+      ]
+    },
+    {
+      "id": "hall_lounge_opening",
+      "wall": "room_row",
+      "kind": "pocket_door",
+      "start": 528,
+      "end": 565,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace"
+    },
+    {
+      "id": "dining_lounge_slider",
+      "wall": "room_row",
+      "kind": "sliding_glass",
+      "start": 757,
+      "end": 841,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2,
+      "open_panel": 0
+    },
+    {
+      "id": "master_hall_door",
+      "wall": "master_hall",
+      "kind": "hinged_door",
+      "start": 410,
+      "end": 451,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        241,
+        451
+      ],
+      "leaf_tip": [
+        203,
+        451
+      ]
+    },
+    {
+      "id": "bath_hall_door",
+      "wall": "bath_hall",
+      "kind": "hinged_door",
+      "start": 412,
+      "end": 450,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        450,
+        405
+      ],
+      "leaf_tip": [
+        450,
+        369
+      ]
+    },
+    {
+      "id": "kitchen_hall_door",
+      "wall": "kitchen_hall",
+      "kind": "hinged_door",
+      "start": 470,
+      "end": 505,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "hinge": [
+        470,
+        405
+      ],
+      "leaf_tip": [
+        470,
+        372
+      ]
+    },
+    {
+      "id": "kitchen_dining_passage",
+      "wall": "kitchen_dining",
+      "kind": "passage",
+      "start": 287,
+      "end": 329,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace"
+    },
+    {
+      "id": "ensuite_master_entry",
+      "wall": "master_right",
+      "kind": "pocket_door",
+      "start": 283,
+      "end": 321,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace"
+    },
+    {
+      "id": "master_upper_robe_doors",
+      "wall": "master_right",
+      "kind": "wardrobe",
+      "start": 236,
+      "end": 273,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "master_lower_robe_doors",
+      "wall": "master_right",
+      "kind": "wardrobe",
+      "start": 335,
+      "end": 397,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "bed2_robe_doors",
+      "wall": "bed2_robe_front",
+      "kind": "wardrobe",
+      "start": 522,
+      "end": 580,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "bed3_robe_doors",
+      "wall": "bed3_robe_front",
+      "kind": "wardrobe",
+      "start": 597,
+      "end": 654,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "linen_doors",
+      "wall": "bath_hall",
+      "kind": "wardrobe",
+      "start": 278,
+      "end": 332,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace",
+      "panels": 2
+    },
+    {
+      "id": "hall_stair_landing",
+      "wall": "room_row",
+      "kind": "passage",
+      "start": 447,
+      "end": 511,
+      "sill_m": 0.03,
+      "head_m": 2.1,
+      "confidence": "approximate trace"
+    }
+  ],
+  "opening_notes": [
+    "Hinged door swings and sliding openings interpreted from reference symbols.",
+    "Kitchen/dining and ensuite/master entry types are best-effort readings of the small reference.",
+    "All opening heights and frame profiles are illustrative, not measured.",
+    "Display-height cutaways also truncate doors and windows on lowered walls."
+  ]
+}
